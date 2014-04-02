@@ -76,7 +76,8 @@ void WebCamWindow::startWebCam()
     if (!timer->isActive())
     {
         webcam= new cv::VideoCapture(0);
-        timer->start(50);
+        webcam->set(5, 60);  //frame rate
+        timer->start(20);
         webCamButton->setText(tr("Arreter aquisition"));
 
     }
@@ -105,7 +106,8 @@ void WebCamWindow::detectHand()
 
 void WebCamWindow::trackHand()
 {
-
+    cv::Rect rectRoi(250,200,150,100);
+    rectangle(image,rectRoi,Scalar( 200, 200, 10),2,8,0);
     MatchingMethod();
 }
 
@@ -148,8 +150,9 @@ void WebCamWindow::MatchingMethod()
   rectangle( img_display, matchLoc, Point( matchLoc.x + temp.cols , matchLoc.y + temp.rows ), Scalar::all(0), 2, 8, 0 );
   rectangle( result, matchLoc, Point( matchLoc.x + temp.cols , matchLoc.y + temp.rows ), Scalar::all(0), 2, 8, 0 );
 
+  flip(img_display,img_display,1);
   imshow( image_window, img_display );
-  imshow( result_window, result );
+  //imshow( result_window, result );
 
   return;
 }
