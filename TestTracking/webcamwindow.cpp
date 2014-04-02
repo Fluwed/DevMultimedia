@@ -91,10 +91,19 @@ void WebCamWindow::startWebCam()
 
 void WebCamWindow::detectHand()
 {
+    Mat frame;
+    Mat temp;
     // Position X/Y Taille X/Y (inverse)
     cv::Rect rectRoi(250,200,150,100);
     // Scalar (R,G,B), ,Epaisseur,0
     rectangle(image,rectRoi,Scalar( 0, 200, 10),2,8,0);
+    webcam->retrieve(frame, 0);
+    temp=frame.clone();
+    temp=temp(rectRoi);
+    vector<int> compression_params;
+        compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+        compression_params.push_back(9);
+    imwrite("Template.png",temp,compression_params);
 }
 
 void WebCamWindow::trackHand()
