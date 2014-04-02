@@ -92,7 +92,6 @@ void WebCamWindow::startWebCam()
 void WebCamWindow::detectHand()
 {
     Mat frame;
-    Mat temp;
     // Position X/Y Taille X/Y (inverse)
     cv::Rect rectRoi(250,200,150,100);
     // Scalar (R,G,B), ,Epaisseur,0
@@ -106,8 +105,51 @@ void WebCamWindow::detectHand()
 
 void WebCamWindow::trackHand()
 {
-    cv::Rect rectRoi(250,200,150,100);
-    rectangle(image,rectRoi,Scalar( 200, 200, 10),2,8,0);
+
+    MatchingMethod();
+}
+
+void WebCamWindow::MatchingMethod()
+{
+  /// Source image to display
+  Mat img_display;Mat result;
+
+  const char* image_window = "Source Image";
+  const char* result_window = "Result window";
+
+  int match_method;
+
+  image.copyTo( img_display );
+
+  /// Create the result matrix
+  int result_cols =  image.cols - temp.cols + 1;
+  int result_rows = image.rows - temp.rows + 1;
+
+  result.create( result_cols, result_rows, CV_32FC1 );
+
+  /// Do the Matching and Normalize
+  matchTemplate( image, temp, result,5 );
+  normalize( result, result, 0, 1, NORM_MINMAX, -1, Mat() );
+
+  /// Localizing the best match with minMaxLoc
+  double minVal; double maxVal; Point minLoc; Point maxLoc;
+  Point matchLoc;
+
+  minMaxLoc( result, &minVal, &maxVal, &minLoc, &maxLoc, Mat() );
 
 
+  /// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+  if( match_method  == CV_TM_SQDIFF || match_method == CV_TM_SQDIFF_NORMED )
+    { matchLoc = minLoc; }
+  else
+    { matchLoc = maxLoc; }
+
+  /// Show me what you got
+  rectangle( img_display, matchLoc, Point( matchLoc.x + temp.cols , matchLoc.y + temp.rows ), Scalar::all(0), 2, 8, 0 );
+  rectangle( result, matchLoc, Point( matchLoc.x + temp.cols , matchLoc.y + temp.rows ), Scalar::all(0), 2, 8, 0 );
+
+  imshow( image_window, img_display );
+  imshow( result_window, result );
+
+  return;
 }

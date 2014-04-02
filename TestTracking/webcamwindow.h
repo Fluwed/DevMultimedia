@@ -17,6 +17,7 @@ public:
     void detectHand();
     void trackHand();
 
+    void MatchingMethod();
 private slots:
     void aquire();
     void startWebCam();
@@ -30,8 +31,9 @@ private:
     QLabel *label;
     cv::Mat imgCam;
     cv::Mat image;
-    cv::VideoCapture *webcam;
     cv::Mat temp;
+    cv::VideoCapture *webcam;
+
     };
 
 #endif // WEBCAMWINDOW_H
