@@ -31,6 +31,7 @@ private:
     cv::Mat imgCam;
     cv::Mat image;
     cv::VideoCapture *webcam;
+    cv::Mat temp;
     };
 
 #endif // WEBCAMWINDOW_H

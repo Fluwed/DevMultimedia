@@ -97,13 +97,11 @@ void WebCamWindow::detectHand()
     cv::Rect rectRoi(250,200,150,100);
     // Scalar (R,G,B), ,Epaisseur,0
     rectangle(image,rectRoi,Scalar( 0, 200, 10),2,8,0);
-    webcam->retrieve(frame, 0);
-    temp=frame.clone();
+    temp=image.clone();
     temp=temp(rectRoi);
-    vector<int> compression_params;
-        compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
-        compression_params.push_back(9);
-    imwrite("Template.png",temp,compression_params);
+    cv::flip(temp,temp,1);
+    imshow("test",temp);
+
 }
 
 void WebCamWindow::trackHand()
