@@ -151,9 +151,6 @@ void WebCamWindow::MatchingMethod()
     /// Show me what you got
     rectangle( image, matchLoc, Point( matchLoc.x + temp.cols , matchLoc.y + temp.rows ), Scalar::all(0), 2, 8, 0 );
     //rectangle( result, matchLoc, Point( matchLoc.x + temp.cols , matchLoc.y + temp.rows ), Scalar::all(0), 2, 8, 0 );
-
-    flip(img_display,img_display,1);
-    imshow( image_window, img_display );
     //imshow( result_window, result );
     //cv::flip(img_display,img_display,1);
     //imshow( image_window, img_display );
