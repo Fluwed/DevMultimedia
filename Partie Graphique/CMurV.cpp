@@ -1,4 +1,4 @@
-#include "CMur.h"
+#include "CMurV.h"
 #include <QAbstractAnimation>
 
 /*---------------------------------------------------------------------------*/
@@ -15,87 +15,51 @@ static const int m_iFaces[6][4] = {
     {   4,  5,  6,  7   },          // rear side
 };
 
-float m_fVertices[8][3] = {
-    {   -0.5,     17.2,    -0.25 },    // 0 front top left
-    {    0.5,     17.2,    -0.25 },    // 1 front top right
-    {    0.5,    -17.2,    -0.25 },    // 2 front bottom right
-    {   -0.5,    -17.2,    -0.25 },    // 3 front bottom left
-    {   -0.5,     17.2,     0.25 },    // 4 rear top left
-    {    0.5,     17.2,     0.25 },    // 5 rear top right
-    {    0.5,    -17.2,     0.25 },    // 6 rear bottom right
-    {   -0.5,    -17.2,     0.25 }     // 7 rear bottom left
+float m_fVerticess[8][3] = {
+    {   -0.5,     0.25,    -15.2 },    // 0 front top left
+    {    0.5,     0.25,    -15.2 },    // 1 front top right
+    {    0.5,    -0.25,    -15.2 },    // 2 front bottom right
+    {   -0.5,    -0.25,    -15.2 },    // 3 front bottom left
+    {   -0.5,     0.25,     18.2 },    // 4 rear top left
+    {    0.5,     0.25,     18.2 },    // 5 rear top right
+    {    0.5,    -0.25,     18.2 },    // 6 rear bottom right
+    {   -0.5,    -0.25,     18.2 }     // 7 rear bottom left
 };
 
 
 /*---------------------------------------------------------------------------*/
-CMur::CMur()
+CMurV::CMurV()
 {
 }
 
 /*---------------------------------------------------------------------------*/
-CMur::CMur(int _id) : CObject(_id)
+CMurV::CMurV(int _id) : CObject(_id)
 {
-    /*if (_id==0)
-    {
-        m_fVertices= {
-            {   -0.5,     0.25,    -15 },    // 0 front top left
-            {    0.5,     0.25,    -15 },    // 1 front top right
-            {    0.5,    -0.25,    -15 },    // 2 front bottom right
-            {   -0.5,    -0.25,    -15 },    // 3 front bottom left
-            {   -0.5,     0.25,     15 },    // 4 rear top left
-            {    0.5,     0.25,     15 },    // 5 rear top right
-            {    0.5,    -0.25,     15 },    // 6 rear bottom right
-            {   -0.5,    -0.25,     15 }     // 7 rear bottom left
-        };
-    m_fVertices[0][0]=-0.5;
-    m_fVertices[1][0]=0.5;
-    m_fVertices[2][0]=0.5;
-    m_fVertices[3][0]=-0.5;
-    m_fVertices[4][0]=-0.5;
-    m_fVertices[5][0]=0.5;
-    m_fVertices[6][0]=0.5;
-    m_fVertices[7][0]=0.5;
-    m_fVertices[0][1]=0.25;
-    m_fVertices[1][1]=0.25;
-    m_fVertices[2][1]=-0.25;
-    m_fVertices[3][1]=-0.25;
-    m_fVertices[4][1]=0.25;
-    m_fVertices[5][1]=0.25;
-    m_fVertices[6][1]=-0.25;
-    m_fVertices[7][1]=-0.25;
-    m_fVertices[0][2]=-15;
-    m_fVertices[1][2]=-15;
-    m_fVertices[2][2]=-15;
-    m_fVertices[3][2]=-15;
-    m_fVertices[4][2]=15;
-    m_fVertices[5][2]=15;
-    m_fVertices[6][2]=15;
-    m_fVertices[7][2]=15;
-    }*/
+
 }
 
 /*---------------------------------------------------------------------------*/
-int CMur::iGetNbFaces()
+int CMurV::iGetNbFaces()
 {
     return m_iNbFaces;
 }
 
 /*---------------------------------------------------------------------------*/
-int CMur::iGetNbVertices(int _iFace)
+int CMurV::iGetNbVertices(int _iFace)
 {
     return m_iNbVertices[_iFace];
 }
 
 /*---------------------------------------------------------------------------*/
-void CMur::vGetVertex(int _iFace, int _iVertex, CVector3* _poVect)
+void CMurV::vGetVertex(int _iFace, int _iVertex, CVector3* _poVect)
 {
-    _poVect->vSet( m_fVertices[m_iFaces[_iFace][_iVertex]][0],
-            m_fVertices[m_iFaces[_iFace][_iVertex]][1],
-            m_fVertices[m_iFaces[_iFace][_iVertex]][2] );
+    _poVect->vSet( m_fVerticess[m_iFaces[_iFace][_iVertex]][0],
+            m_fVerticess[m_iFaces[_iFace][_iVertex]][1],
+            m_fVerticess[m_iFaces[_iFace][_iVertex]][2] );
 }
 
 /*---------------------------------------------------------------------------*/
-void CMur::vGetSideColor(int _face, CVector3* _poColor)
+void CMurV::vGetSideColor(int _face, CVector3* _poColor)
 {
     switch(_face)
     {
@@ -123,7 +87,7 @@ void CMur::vGetSideColor(int _face, CVector3* _poColor)
         _poColor->vSet(1.0, 1.0, 1.0);
 }
 
-int CMur::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersection, int* _iPickedFace)
+int CMurV::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersection, int* _iPickedFace)
 {
     int iStatus = 0;
     int iPickedFace = -1; // -1 will mean "not initialized". Will then take the
@@ -143,9 +107,9 @@ int CMur::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersec
         int iB = m_iFaces[i][2];
         float k;
 
-        ptO = m_oPosition + CVector3(m_fVertices[iO][0], m_fVertices[iO][1], m_fVertices[iO][2]);
-        ptA = m_oPosition + CVector3(m_fVertices[iA][0], m_fVertices[iA][1], m_fVertices[iA][2]);
-        ptB = m_oPosition + CVector3(m_fVertices[iB][0], m_fVertices[iB][1], m_fVertices[iB][2]);
+        ptO = m_oPosition + CVector3(m_fVerticess[iO][0], m_fVerticess[iO][1], m_fVerticess[iO][2]);
+        ptA = m_oPosition + CVector3(m_fVerticess[iA][0], m_fVerticess[iA][1], m_fVerticess[iA][2]);
+        ptB = m_oPosition + CVector3(m_fVerticess[iB][0], m_fVerticess[iB][1], m_fVerticess[iB][2]);
 
         OA = ptA - ptO;
         OB = ptB - ptO;
@@ -206,12 +170,12 @@ int CMur::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersec
     return iStatus;
 }
 
-void CMur::GetSpeed(CVector3 *_oSpeed)
+void CMurV::GetSpeed(CVector3 *_oSpeed)
 {
 
 }
 
-void CMur::SetSpeed(CVector3 *_oSpeed)
+void CMurV::SetSpeed(CVector3 *_oSpeed)
 {
 
 }

@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     CBrique.cpp \
     CShpere.cpp \
     CPalet.cpp \
-    CMur.cpp
+    CMurH.cpp \
+    CMurV.cpp
 
 HEADERS  += \
     CView.h \
@@ -34,4 +35,5 @@ HEADERS  += \
     CBrique.h \
     CSphere.h \
     CPalet.h \
-    CMur.h
+    CMurH.h \
+    CMurV.h

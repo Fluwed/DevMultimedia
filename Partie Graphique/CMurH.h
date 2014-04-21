@@ -1,13 +1,13 @@
-#ifndef CMur_H
-#define CMur_H
+#ifndef CMurH_H
+#define CMurH_H
 
 #include "CObject.h"
 
-class CMur : public CObject
+class CMurH : public CObject
 {
 public:
-    CMur();
-    CMur(int _id);
+    CMurH();
+    CMurH(int _id);
 
     virtual int iGetNbFaces();
     virtual int iGetNbVertices(int _iFace);
@@ -19,4 +19,4 @@ public:
     virtual void SetSpeed(CVector3 *_oSpeed);
 };
 
-#endif // CMUR_H
+#endif // CMURH_H

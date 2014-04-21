@@ -1,5 +1,4 @@
-#include "CBrique.h"
-#include "qdebug.h"
+#include "CMurH.h"
 #include <QAbstractAnimation>
 
 /*---------------------------------------------------------------------------*/
@@ -16,42 +15,79 @@ static const int m_iFaces[6][4] = {
     {   4,  5,  6,  7   },          // rear side
 };
 
-static const float m_fVertices[8][3] = {
-    {   -0.75,     2.25,    -0.75 },    // 0 front top left
-    {    0.75,     2.25,    -0.75 },    // 1 front top right
-    {    0.75,    -2.25,    -0.75 },    // 2 front bottom right
-    {   -0.75,    -2.25,    -0.75 },    // 3 front bottom left
-    {   -0.75,     2.25,     0.75 },    // 4 rear top left
-    {    0.75,     2.25,     0.75 },    // 5 rear top right
-    {    0.75,    -2.25,     0.75 },    // 6 rear bottom right
-    {   -0.75,    -2.25,     0.75 }     // 7 rear bottom left
+float m_fVertices[8][3] = {
+    {   -0.5,     26,    -0.25 },    // 0 front top left
+    {    0.5,     26,    -0.25 },    // 1 front top right
+    {    0.5,    -26,    -0.25 },    // 2 front bottom right
+    {   -0.5,    -26,    -0.25 },    // 3 front bottom left
+    {   -0.5,     26,     0.25 },    // 4 rear top left
+    {    0.5,     26,     0.25 },    // 5 rear top right
+    {    0.5,    -26,     0.25 },    // 6 rear bottom right
+    {   -0.5,    -26,     0.25 }     // 7 rear bottom left
 };
 
 
 /*---------------------------------------------------------------------------*/
-CBrique::CBrique()
+CMurH::CMurH()
 {
 }
 
 /*---------------------------------------------------------------------------*/
-CBrique::CBrique(int _id) : CObject(_id)
+CMurH::CMurH(int _id) : CObject(_id)
 {
+    /*if (_id==0)
+    {
+        m_fVertices= {
+            {   -0.5,     0.25,    -15 },    // 0 front top left
+            {    0.5,     0.25,    -15 },    // 1 front top right
+            {    0.5,    -0.25,    -15 },    // 2 front bottom right
+            {   -0.5,    -0.25,    -15 },    // 3 front bottom left
+            {   -0.5,     0.25,     15 },    // 4 rear top left
+            {    0.5,     0.25,     15 },    // 5 rear top right
+            {    0.5,    -0.25,     15 },    // 6 rear bottom right
+            {   -0.5,    -0.25,     15 }     // 7 rear bottom left
+        };
+    m_fVertices[0][0]=-0.5;
+    m_fVertices[1][0]=0.5;
+    m_fVertices[2][0]=0.5;
+    m_fVertices[3][0]=-0.5;
+    m_fVertices[4][0]=-0.5;
+    m_fVertices[5][0]=0.5;
+    m_fVertices[6][0]=0.5;
+    m_fVertices[7][0]=0.5;
+    m_fVertices[0][1]=0.25;
+    m_fVertices[1][1]=0.25;
+    m_fVertices[2][1]=-0.25;
+    m_fVertices[3][1]=-0.25;
+    m_fVertices[4][1]=0.25;
+    m_fVertices[5][1]=0.25;
+    m_fVertices[6][1]=-0.25;
+    m_fVertices[7][1]=-0.25;
+    m_fVertices[0][2]=-15;
+    m_fVertices[1][2]=-15;
+    m_fVertices[2][2]=-15;
+    m_fVertices[3][2]=-15;
+    m_fVertices[4][2]=15;
+    m_fVertices[5][2]=15;
+    m_fVertices[6][2]=15;
+    m_fVertices[7][2]=15;
+    }*/
 }
 
 /*---------------------------------------------------------------------------*/
-int CBrique::iGetNbFaces()
+int CMurH::iGetNbFaces()
 {
     return m_iNbFaces;
 }
 
 /*---------------------------------------------------------------------------*/
-int CBrique::iGetNbVertices(int _iFace)
+int CMurH::iGetNbVertices(int _iFace)
 {
     return m_iNbVertices[_iFace];
 }
 
 /*---------------------------------------------------------------------------*/
-void CBrique::vGetVertex(int _iFace, int _iVertex, CVector3* _poVect)
+void CMurH::vGetVertex(int _iFace, int _iVertex, CVector3* _poVect)
 {
     _poVect->vSet( m_fVertices[m_iFaces[_iFace][_iVertex]][0],
             m_fVertices[m_iFaces[_iFace][_iVertex]][1],
@@ -59,26 +95,26 @@ void CBrique::vGetVertex(int _iFace, int _iVertex, CVector3* _poVect)
 }
 
 /*---------------------------------------------------------------------------*/
-void CBrique::vGetSideColor(int _face, CVector3* _poColor)
+void CMurH::vGetSideColor(int _face, CVector3* _poColor)
 {
     switch(_face)
     {
-    case 0:
+    case 5:
         _poColor->vSet(1.0, 0.0, 0.0);
         break;
-    case 1:
+    case 4:
         _poColor->vSet(1.0, 1.0, 0.0);
         break;
-    case 2:
+    case 3:
         _poColor->vSet(0.0, 1.0, 0.0);
         break;
-    case 3:
+    case 2:
         _poColor->vSet(0.0, 1.0, 1.0);
         break;
-    case 4:
+    case 1:
         _poColor->vSet(0.0, 0.0, 1.0);
         break;
-    case 5:
+    case 0:
     default:
         _poColor->vSet(1.0, 0.0, 1.0);
         break;
@@ -87,7 +123,7 @@ void CBrique::vGetSideColor(int _face, CVector3* _poColor)
         _poColor->vSet(1.0, 1.0, 1.0);
 }
 
-int CBrique::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersection, int* _iPickedFace)
+int CMurH::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersection, int* _iPickedFace)
 {
     int iStatus = 0;
     int iPickedFace = -1; // -1 will mean "not initialized". Will then take the
@@ -168,15 +204,14 @@ int CBrique::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInter
         iStatus = 1;
     }
     return iStatus;
-
 }
 
-void CBrique::GetSpeed(CVector3 *_oSpeed)
+void CMurH::GetSpeed(CVector3 *_oSpeed)
 {
 
 }
 
-void CBrique::SetSpeed(CVector3 *_oSpeed)
+void CMurH::SetSpeed(CVector3 *_oSpeed)
 {
 
 }

@@ -62,7 +62,7 @@ void CGLArea::updateCamera(void)
     //glFrustrum();
     //gluPerspective(30.0f, 1, 1.0f, 100.0f);
 
-    glOrtho(-20.0, +20.0, -20.0, +20.0, 0.0, 60.0);
+    glOrtho(-30.0, +30.0, -30.0, +30.0, 0.0, 120.0);
 
     gluLookAt(m_fRadius*cos(m_fAzimuth)*cos(m_fElevation),
               m_fRadius*sin(m_fAzimuth)*cos(m_fElevation),
@@ -131,10 +131,10 @@ void CGLArea::paintGL()
             poCurrent->vGetPosition(&oPos);
 
             glLoadIdentity();
-            if (i<2)
+            /*if (i<2)
             {
                 glRotated(90,1,0,0);
-            }
+            }*/
             glTranslatef(oPos.fGetX(), oPos.fGetY(), oPos.fGetZ());
 
             // For each face...
@@ -167,20 +167,28 @@ void CGLArea::mousePressEvent(QMouseEvent* _event)
 {
     CVector3 _poRayOrigin;
     CVector3 _poRayDir;
+    CVector3 oSpeed(0,0,0);
+    CObject* Sphere = new CSphere();
 
-    m_poCtrl->vResetPicked(); // On déselectionne tout les cubes
-    m_oLastPos = _event->pos();
-    convertMouseToRay(_event->x(),_event->y(),&_poRayOrigin, &_poRayDir);
+    Sphere=m_poModel->poGetObject(5);
+
+
+    //convertMouseToRay(_event->x(),_event->y(),&_poRayOrigin, &_poRayDir);
+
+    Sphere->vGetPosition(&_poRayOrigin);
+    Sphere->GetSpeed(&_poRayDir);
     m_poCtrl->iCheckPicked(&_poRayOrigin, &_poRayDir); // On vérifie si un cube à été touché
 
 
-    CVector3 oSpeed(0,0,-0.25);
-    CObject* Sphere = new CSphere();
-
-
-    Sphere=m_poModel->poGetObject(5);
     Sphere->SetSpeed(&oSpeed);
 
+    /*--------------------------------------*/
+    // Movement Caméra
+    /*--------------------------------------*/
+
+    m_oLastPos = _event->pos();
+
+    /*--------------------------------------*/
 }
 
 /*---------------------------------------------------------------------------*/
