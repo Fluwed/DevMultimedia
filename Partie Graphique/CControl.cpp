@@ -43,7 +43,7 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
     float distance=100000;
     for (int i=0;i<m_poModel->iGetNbObjects();i++)
     {
-        CObject* Cube = new CCube();
+        CObject* Cube = new CBrique();
         CVector3 poInter;
         int iFace;
         Cube=m_poModel->poGetObject(i);
@@ -67,7 +67,7 @@ void CControl::vResetPicked() // Permet de déselectionner tout les cubes
 {
     for (int i=0;i<m_poModel->iGetNbObjects();i++)
     {
-        CObject* Cube = new CCube();
+        CObject* Cube = new CBrique();
         Cube=m_poModel->poGetObject(i);
         Cube->vSetPicked(-1);
     }

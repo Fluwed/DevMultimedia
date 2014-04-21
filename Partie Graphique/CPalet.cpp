@@ -169,3 +169,14 @@ int CPalet::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInters
     return iStatus;
 }
 
+void CPalet::GetSpeed(CVector3 *_oSpeed)
+{
+
+}
+
+void CPalet::SetSpeed(CVector3 *_oSpeed)
+{
+
+}
+
+

@@ -30,6 +30,9 @@ public:
     virtual void vGetSideColor(int _face, CVector3* _poColor) = 0;
     virtual int iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInter, int* _iFace)=0;
 
+    virtual void GetSpeed(CVector3 *_oSpeed) = 0;
+    virtual void SetSpeed(CVector3 *_oSpeed) = 0;
+
 
 };
 

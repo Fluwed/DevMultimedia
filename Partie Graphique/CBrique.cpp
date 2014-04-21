@@ -28,29 +28,29 @@ static const float m_fVertices[8][3] = {
 
 
 /*---------------------------------------------------------------------------*/
-CCube::CCube()
+CBrique::CBrique()
 {
 }
 
 /*---------------------------------------------------------------------------*/
-CCube::CCube(int _id) : CObject(_id)
+CBrique::CBrique(int _id) : CObject(_id)
 {
 }
 
 /*---------------------------------------------------------------------------*/
-int CCube::iGetNbFaces()
+int CBrique::iGetNbFaces()
 {
     return m_iNbFaces;
 }
 
 /*---------------------------------------------------------------------------*/
-int CCube::iGetNbVertices(int _iFace)
+int CBrique::iGetNbVertices(int _iFace)
 {
     return m_iNbVertices[_iFace];
 }
 
 /*---------------------------------------------------------------------------*/
-void CCube::vGetVertex(int _iFace, int _iVertex, CVector3* _poVect)
+void CBrique::vGetVertex(int _iFace, int _iVertex, CVector3* _poVect)
 {
     _poVect->vSet( m_fVertices[m_iFaces[_iFace][_iVertex]][0],
             m_fVertices[m_iFaces[_iFace][_iVertex]][1],
@@ -58,7 +58,7 @@ void CCube::vGetVertex(int _iFace, int _iVertex, CVector3* _poVect)
 }
 
 /*---------------------------------------------------------------------------*/
-void CCube::vGetSideColor(int _face, CVector3* _poColor)
+void CBrique::vGetSideColor(int _face, CVector3* _poColor)
 {
     switch(_face)
     {
@@ -86,7 +86,7 @@ void CCube::vGetSideColor(int _face, CVector3* _poColor)
         _poColor->vSet(1.0, 1.0, 1.0);
 }
 
-int CCube::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersection, int* _iPickedFace)
+int CBrique::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersection, int* _iPickedFace)
 {
     int iStatus = 0;
     int iPickedFace = -1; // -1 will mean "not initialized". Will then take the
@@ -167,5 +167,15 @@ int CCube::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInterse
         iStatus = 1;
     }
     return iStatus;
+}
+
+void CBrique::GetSpeed(CVector3 *_oSpeed)
+{
+
+}
+
+void CBrique::SetSpeed(CVector3 *_oSpeed)
+{
+
 }
 

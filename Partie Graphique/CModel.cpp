@@ -28,7 +28,7 @@ CModel::~CModel()
 /*---------------------------------------------------------------------------*/
 void CModel::vAdd(int _iId)
 {
-    CObject* poObj = new CCube(_iId);
+    CObject* poObj = new CBrique(_iId);
     CVector3 Pos;
     int _face;
 

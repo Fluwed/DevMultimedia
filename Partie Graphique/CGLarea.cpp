@@ -8,6 +8,8 @@
 #include <QMouseEvent>
 #include <qdebug.h>
 #include "QTimer"
+#include "CSphere.h"
+
 
 
 #define k_PI            ((double)3.1415926535897932384626433832795)
@@ -154,12 +156,7 @@ void CGLArea::paintGL()
             }
         }
         if (m_poModel->iGetNbObjects()>15)
-        {
-            MoveSphere(0.025);
-            QTimer *timer = new QTimer(this);
-            connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
-            timer->start(60);
-        }
+            MoveSphere();
         glLoadIdentity();
         glFlush();
     }
@@ -175,7 +172,15 @@ void CGLArea::mousePressEvent(QMouseEvent* _event)
     m_oLastPos = _event->pos();
     convertMouseToRay(_event->x(),_event->y(),&_poRayOrigin, &_poRayDir);
     m_poCtrl->iCheckPicked(&_poRayOrigin, &_poRayDir); // On vérifie si un cube à été touché
-    updateGL();
+
+
+    CVector3 oSpeed(0,0,-0.25);
+    CObject* Sphere = new CSphere();
+
+
+    Sphere=m_poModel->poGetObject(5);
+    Sphere->SetSpeed(&oSpeed);
+
 }
 
 /*---------------------------------------------------------------------------*/
@@ -206,7 +211,7 @@ void CGLArea::mouseMoveEvent(QMouseEvent* _event)
 
     // Update everything
     updateCamera();
-    updateGL();
+    //updateGL();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -243,12 +248,20 @@ void CGLArea::convertMouseToRay(int _x, int _y, CVector3* _poRayOrigin, CVector3
     _poRayDir->iNormalize();
 }
 
-void CGLArea::MoveSphere(float value)
+void CGLArea::MoveSphere ()
 {
-        CVector3 oPos(0,0,0);
-        {
-            m_poModel->poGetObject(5)->vGetPosition(&oPos);
-            oPos.vSetZ(oPos.fGetZ()+value);
-            m_poModel->poGetObject(5)->vSetPosition(&oPos);
-        }
+    CVector3 oPos(0,0,0);
+    CVector3 oSpeed(0,0,0);
+    CObject* Sphere = new CSphere();
+
+
+    Sphere=m_poModel->poGetObject(5);
+    Sphere->vGetPosition(&oPos);
+    Sphere->GetSpeed(&oSpeed);
+    oPos.vSetX(oPos.fGetX()+oSpeed.fGetX());
+    oPos.vSetY(oPos.fGetY()+oSpeed.fGetY());
+    oPos.vSetZ(oPos.fGetZ()+oSpeed.fGetZ());
+    m_poModel->poGetObject(5)->vSetPosition(&oPos);
+
 }
+

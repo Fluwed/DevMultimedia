@@ -15,6 +15,8 @@ public:
     virtual void vGetSideColor(int _face, CVector3* _poColor);
     int iIsPicked(CVector3 *_poOrigin, CVector3 *_poDir, CVector3 *_poIntersection, int *_iPickedFace);
 
+    virtual void GetSpeed(CVector3 *_oSpeed);
+    virtual void SetSpeed(CVector3 *_oSpeed);
 };
 
 #endif // CMUR_H

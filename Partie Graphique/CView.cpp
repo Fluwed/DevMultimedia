@@ -59,6 +59,9 @@ void CView::vAddFunction(void)
     iNbCube=iNbCube+1;
     m_poGlArea->updateGL();
     }
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), m_poGlArea, SLOT(updateGL()));
+    timer->start(0);
 }
 
 /*---------------------------------------------------------------------------*/

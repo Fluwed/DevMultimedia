@@ -1,4 +1,4 @@
-#include "csphere.h"
+#include "CSphere.h"
 #include <qmath.h>
 
 
@@ -11,12 +11,14 @@
 CSphere::CSphere()
 {
     vGenerateData();
+    m_oSpeed.vSet(0.0,0.0,0.25);
 }
 
 /*---------------------------------------------------------------------------*/
 CSphere::CSphere(int _id) : CObject(_id)
 {
     vGenerateData();
+    m_oSpeed.vSet(0.0,0.0,0.25);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -178,4 +180,18 @@ void CSphere::vGenerateData(void)
         vComputeTriangle(sommets[sindex[i][2]], sommets[sindex[i][1]], sommets[sindex[i][0]], 3);
     }
 
+}
+
+void CSphere::GetSpeed(CVector3* _oSpeed)
+{
+    _oSpeed->vSetX(m_oSpeed.fGetX());
+    _oSpeed->vSetY(m_oSpeed.fGetY());
+    _oSpeed->vSetZ(m_oSpeed.fGetZ());
+}
+
+void CSphere::SetSpeed(CVector3* _oSpeed)
+{
+    m_oSpeed.vSetX(_oSpeed->fGetX());
+    m_oSpeed.vSetY(_oSpeed->fGetY());
+    m_oSpeed.vSetZ(_oSpeed->fGetZ());
 }

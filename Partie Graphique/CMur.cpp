@@ -206,3 +206,13 @@ int CMur::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersec
     return iStatus;
 }
 
+void CMur::GetSpeed(CVector3 *_oSpeed)
+{
+
+}
+
+void CMur::SetSpeed(CVector3 *_oSpeed)
+{
+
+}
+
