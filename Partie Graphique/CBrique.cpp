@@ -92,7 +92,7 @@ int CBrique::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInter
     int iStatus = 0;
     int iPickedFace = -1; // -1 will mean "not initialized". Will then take the
     // value of the index of the side of the cube.
-    float fClosestDistance = 100000; // Something close to infinity.
+    float fClosestDistance = 0.8; // Something close to infinity.
     CVector3 oClosestIntersection; // Last found closest intersection
 
 
@@ -166,6 +166,8 @@ int CBrique::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInter
         _poIntersection->vSet(oClosestIntersection);
         *_iPickedFace = iPickedFace;
         iStatus = 1;
+        qDebug()<<iStatus;
+        qDebug()<<"Dist :"<<fClosestDistance;
     }
     return iStatus;
 

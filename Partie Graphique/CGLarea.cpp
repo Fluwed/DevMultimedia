@@ -131,10 +131,6 @@ void CGLArea::paintGL()
             poCurrent->vGetPosition(&oPos);
 
             glLoadIdentity();
-            /*if (i<2)
-            {
-                glRotated(90,1,0,0);
-            }*/
             glTranslatef(oPos.fGetX(), oPos.fGetY(), oPos.fGetZ());
 
             // For each face...
@@ -156,7 +152,10 @@ void CGLArea::paintGL()
             }
         }
         if (m_poModel->iGetNbObjects()>15)
+        {
             MoveSphere();
+        }
+
         glLoadIdentity();
         glFlush();
     }
@@ -165,22 +164,12 @@ void CGLArea::paintGL()
 /*---------------------------------------------------------------------------*/
 void CGLArea::mousePressEvent(QMouseEvent* _event)
 {
-    CVector3 _poRayOrigin;
-    CVector3 _poRayDir;
-    CVector3 oSpeed(0,0,0);
-    CObject* Sphere = new CSphere();
-
-    Sphere=m_poModel->poGetObject(5);
-
-
     //convertMouseToRay(_event->x(),_event->y(),&_poRayOrigin, &_poRayDir);
 
-    Sphere->vGetPosition(&_poRayOrigin);
-    Sphere->GetSpeed(&_poRayDir);
-    m_poCtrl->iCheckPicked(&_poRayOrigin, &_poRayDir); // On vérifie si un cube à été touché
 
 
-    Sphere->SetSpeed(&oSpeed);
+
+    //Sphere->SetSpeed(&oSpeed);
 
     /*--------------------------------------*/
     // Movement Caméra
@@ -271,5 +260,15 @@ void CGLArea::MoveSphere ()
     oPos.vSetZ(oPos.fGetZ()+oSpeed.fGetZ());
     m_poModel->poGetObject(5)->vSetPosition(&oPos);
 
+    CVector3 _poRayOrigin;
+    CVector3 _poRayDir;
+    //CVector3 oSpeed(0,0,0);
+    //CObject* Sphere = new CSphere();
+
+    Sphere=m_poModel->poGetObject(5);
+    Sphere->vGetPosition(&_poRayOrigin);
+    Sphere->GetSpeed(&_poRayDir);
+    m_poCtrl->iCheckPicked(&_poRayOrigin, &_poRayDir); // On vérifie si un cube à été touché
+    //qDebug()<<_poRayDir.fGetX()<<_poRayDir.fGetY()<<_poRayDir.fGetZ();
 }
 

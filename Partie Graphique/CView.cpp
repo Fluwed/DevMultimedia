@@ -53,7 +53,7 @@ void CView::vSetModel(CModel* _poMdl)
 /*---------------------------------------------------------------------------*/
 void CView::vAddFunction(void)
 {
-    for (int i=0;i<30;i++)
+    for (int i=0;i<20;i++)
     {
     m_poCtrl->vAddObject(iNbCube);
     iNbCube=iNbCube+1;

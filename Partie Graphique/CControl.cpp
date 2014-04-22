@@ -1,5 +1,6 @@
 #include "CControl.h"
 #include "CBrique.h"
+#include "CSphere.h"
 #include <qdebug.h>
 
 /*---------------------------------------------------------------------------*/
@@ -40,13 +41,16 @@ void CControl::vDelObject()
 int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de dire quel cube est sélectionné
 {
     int isPicked=0;
-    float distance=100000;
+    float distance=10000;
     for (int i=0;i<m_poModel->iGetNbObjects();i++)
     {
         CObject* Cube = new CBrique();
+        CObject* Sphere = new CSphere();
+        CVector3 Speed(0.0,-0.05,-0.05);
         CVector3 poInter;
         int iFace;
         Cube=m_poModel->poGetObject(i);
+        Sphere=m_poModel->poGetObject(5);
         if (Cube->iIsPicked(_poOrigin, _poDir, &poInter, &iFace)==1)
         {
             if(poInter.fDistance(*_poOrigin)<distance)
@@ -55,6 +59,8 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
                 vResetPicked();
                 isPicked=Cube->iGetID();
                 Cube->vSetPicked(iFace);
+                Sphere->SetSpeed(&Speed);
+                m_poModel->vDel(isPicked);
                 //delete Cube; //Fait planter l'appli
             }
         }
