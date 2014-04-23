@@ -249,7 +249,7 @@ void CGLArea::MoveSphere ()
 {
     CVector3 oPos(0,0,0);
     CVector3 oSpeed(0,0,0);
-    CObject* Sphere = new CSphere();
+    CObject* Sphere;
 
 
     Sphere=m_poModel->poGetObject(5);
@@ -265,10 +265,19 @@ void CGLArea::MoveSphere ()
     //CVector3 oSpeed(0,0,0);
     //CObject* Sphere = new CSphere();
 
-    Sphere=m_poModel->poGetObject(5);
+    //Sphere=m_poModel->poGetObject(5);
     Sphere->vGetPosition(&_poRayOrigin);
     Sphere->GetSpeed(&_poRayDir);
-    m_poCtrl->iCheckPicked(&_poRayOrigin, &_poRayDir); // On vérifie si un cube à été touché
-    //qDebug()<<_poRayDir.fGetX()<<_poRayDir.fGetY()<<_poRayDir.fGetZ();
+    _poRayOrigin.vSetY(_poRayOrigin.fGetY()-1);
+    for (int i=0;i<=2;i++)// Détection des collision a partir de 3 trajectoires
+    {
+    _poRayOrigin.vSetY(_poRayOrigin.fGetY()+i);
+    m_poCtrl->iCheckPicked(&_poRayOrigin, &_poRayDir);
+    }
+
+    Sphere=0;
+    delete Sphere;
+
+    //qDebug()<<_poRayDir.fGetX()<<_poRayDir.fGetY()<<_poRayDir.fGetZ();*/
 }
 

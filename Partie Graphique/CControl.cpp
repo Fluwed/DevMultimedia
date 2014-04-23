@@ -44,8 +44,8 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
     float distance=10000;
     for (int i=0;i<m_poModel->iGetNbObjects();i++)
     {
-        CObject* Cube = new CBrique();
-        CObject* Sphere = new CSphere();
+        CObject* Cube;
+        CObject* Sphere;
         CVector3 Speed(0.0,-0.05,-0.05);
         CVector3 poInter;
         int iFace;
@@ -61,10 +61,13 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
                 Cube->vSetPicked(iFace);
                 Sphere->SetSpeed(&Speed);
                 m_poModel->vDel(isPicked);
-                //delete Cube; //Fait planter l'appli
+                Cube=0;
+                delete Cube; //Fait planter l'appli
+                Sphere=0;
+                delete Sphere;
             }
         }
-    }
+    }  
     return isPicked;
 }
 
