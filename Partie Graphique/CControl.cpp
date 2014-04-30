@@ -43,79 +43,105 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
 {
     int isPicked=-1;
     float distance=10000;
-    for (int i=5;i<m_poModel->iGetNbObjects();i++)
+    CObject* Sphere;
+    CVector3 Speed;
+    CVector3 poPos;
+    Sphere=m_poModel->poGetObject(5);
+    Sphere->vGetPosition(&poPos);
+
+    for (int i=6;i<m_poModel->iGetNbObjects();i++)
     {
-        CObject* Cube;
-        CObject* Sphere;
-        CVector3 Speed;
+        CObject* Brique;
         CVector3 poInter;
-        CVector3 poPos;
         int iFace;
-        Cube=m_poModel->poGetObject(i);
-        Sphere=m_poModel->poGetObject(4);
-        Sphere->vGetPosition(&poPos);
-        if (Cube->iIsPicked(_poOrigin, _poDir, &poInter, &iFace)==1)
+        Brique=m_poModel->poGetObject(i);
+
+        if (Brique->iIsPicked(_poOrigin, _poDir, &poInter, &iFace)==1)
         {
             if(poInter.fDistance(*_poOrigin)<distance)
             {
                 distance=poInter.fDistance(*_poOrigin);
                 vResetPicked();
-                isPicked=Cube->iGetID();
-                Cube->vSetPicked(iFace);
+                isPicked=Brique->iGetID();
+                Brique->vSetPicked(iFace);
                 Sphere->GetSpeed(&Speed);
                 Speed.vSetZ(-Speed.fGetZ());
                 Sphere->SetSpeed(&Speed);
                 m_poModel->vDel(isPicked);
 
-                Cube=0;
-                delete Cube;
+                Brique=0;
+                delete Brique;
                 Sphere=0;
                 delete Sphere;
             }
         }
-        if (poPos.fGetY()>25)
-        {
-
-            Sphere->GetSpeed(&Speed);
-            if (Speed.fGetY()>0)
-            {
-                Speed.vSetY(-Speed.fGetY());
-                Sphere->SetSpeed(&Speed);
-            }
-        }
-        if (poPos.fGetY()<-25)
-        {
-
-            Sphere->GetSpeed(&Speed);
-            if (Speed.fGetY()<0)
-            {
-                Speed.vSetY(-Speed.fGetY());
-                Sphere->SetSpeed(&Speed);
-            }
-        }
-        if (poPos.fGetZ()>17)
-        {
-            Sphere->GetSpeed(&Speed);
-            if (Speed.fGetZ()>0)
-            {
-                Speed.vSetZ(-Speed.fGetZ());
-                Sphere->SetSpeed(&Speed);
-            }
-        }
-
-        if(poPos.fGetZ()<-14 )
-        {
-            Sphere->GetSpeed(&Speed);
-            if (Speed.fGetZ()<0)
-            {
-                Speed.vSetZ(-Speed.fGetZ());
-                Sphere->SetSpeed(&Speed);
-            }
-        }
-
-        //qDebug()<<" Z :"<<poPos.fGetZ()<< " Y : "<<poPos.fGetY();
     }
 
+    /*-------------------------     PALET    -------------------------------------*/
+    CObject* Brique;
+    CVector3 poInter;
+    int iFace;
+    Brique=m_poModel->poGetObject(4);
+
+    if (Brique->iIsPicked(_poOrigin, _poDir, &poInter, &iFace)==1)
+    {
+        if(poInter.fDistance(*_poOrigin)<distance)
+        {
+            distance=poInter.fDistance(*_poOrigin);
+            vResetPicked();
+            isPicked=Brique->iGetID();
+            Brique->vSetPicked(iFace);
+            Sphere->GetSpeed(&Speed);
+            Speed.vSetZ(-Speed.fGetZ());
+            Sphere->SetSpeed(&Speed);
+
+            Brique=0;
+            delete Brique;
+            Sphere=0;
+            delete Sphere;
+        }
+    }
+    /*----------------------------------------------------------------------------*/
+
+    if (poPos.fGetY()>25)
+    {
+
+        Sphere->GetSpeed(&Speed);
+        if (Speed.fGetY()>0)
+        {
+            Speed.vSetY(-Speed.fGetY());
+            Sphere->SetSpeed(&Speed);
+        }
+    }
+    if (poPos.fGetY()<-25)
+    {
+
+        Sphere->GetSpeed(&Speed);
+        if (Speed.fGetY()<0)
+        {
+            Speed.vSetY(-Speed.fGetY());
+            Sphere->SetSpeed(&Speed);
+        }
+    }
+    if (poPos.fGetZ()>17)
+    {
+        Sphere->GetSpeed(&Speed);
+        if (Speed.fGetZ()>0)
+        {
+            Speed.vSetZ(-Speed.fGetZ());
+            Sphere->SetSpeed(&Speed);
+        }
+    }
+
+    if(poPos.fGetZ()<-14 )
+    {
+        Sphere->GetSpeed(&Speed);
+        if (Speed.fGetZ()<0)
+        {
+            Speed.vSetZ(-Speed.fGetZ());
+            Sphere->SetSpeed(&Speed);
+        }
+    }
     return isPicked;
 }
 
@@ -148,18 +174,18 @@ void CControl::timerEvent()
     {
         if (is_moving_left)
         {
-            palet=m_poModel->poGetObject(5);
+            palet=m_poModel->poGetObject(4);
             palet->vGetPosition(&oPos);
-            oPos.vSetY(oPos.fGetY()-0.8);
+            oPos.vSetY(oPos.fGetY()-0.5);
             oPos.vSetZ(oPos.fGetZ());
             palet->vSetPosition(&oPos);
         }
 
         if (is_moving_right)
         {
-            palet=m_poModel->poGetObject(5);
+            palet=m_poModel->poGetObject(4);
             palet->vGetPosition(&oPos);
-            oPos.vSetY(oPos.fGetY()+0.8);
+            oPos.vSetY(oPos.fGetY()+0.5);
             oPos.vSetZ(oPos.fGetZ());
             palet->vSetPosition(&oPos);
         }

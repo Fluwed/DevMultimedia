@@ -18,7 +18,7 @@ CSphere::CSphere()
 CSphere::CSphere(int _id) : CObject(_id)
 {
     vGenerateData();
-    //m_oSpeed.vSet(0.0,0.1,0.15);
+    //m_oSpeed.vSet(0.0,0.025,0.5);
 }
 
 /*---------------------------------------------------------------------------*/

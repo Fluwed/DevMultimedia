@@ -61,9 +61,8 @@ void CModel::vAdd(int _iId)
         CObject* poMur1 = new CMurH(); // Mur de gauche / Position 1 dans le model
         CObject* poMur2 = new CMurV(); // Mur du haut / Position 2 dans le model
         CObject* poMur3 = new CMurV(); // Mur du bas / Position 3 dans le model
-        CObject* poSphere = new CSphere(); // Sphere / Position 4 dans le model
-        CObject* poPalet = new CPalet(-2); // Palet / Position 5 dans le model
-
+        CObject* poPalet = new CPalet(); // Palet / Position 4 dans le model
+        CObject* poSphere = new CSphere(); // Sphere / Position 5 dans le model
 
         CVector3 oPosMur(0,0,18);
         CVector3 oPosMur1(0,0,-15);
@@ -79,14 +78,14 @@ void CModel::vAdd(int _iId)
         m_oDatas.append(poMur2);
         m_oDatas.append(poMur3);
 
-        CVector3 oPosSphere(0,0,-10);
-        poSphere->vSetPosition(&oPosSphere);
         CVector3 oPosPalet(0,0,-12);
         poPalet->vSetPosition(&oPosPalet);
 
-        m_oDatas.append(poSphere);
-        m_oDatas.append(poPalet);
+        CVector3 oPosSphere(0,0,-10);
+        poSphere->vSetPosition(&oPosSphere);
 
+        m_oDatas.append(poPalet);
+        m_oDatas.append(poSphere);
     }
     m_oDatas.append(poObj);
 }
