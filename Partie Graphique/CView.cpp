@@ -69,10 +69,16 @@ void CView::vDelFunction(void)
 {
 
     m_poCtrl->vDelObject();
-    m_poGlArea->updateGL();
+
 }
 
+void CView::keyPressEvent(QKeyEvent* _event)
+{
+    m_poCtrl->vMovePalet(_event->key(),true);
+}
 
-
-
+void CView::keyReleaseEvent(QKeyEvent* _event)
+{
+    m_poCtrl->vMovePalet(_event->key(),false);
+}
 

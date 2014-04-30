@@ -151,11 +151,11 @@ void CGLArea::paintGL()
                 glEnd();
             }
         }
-        if (m_poModel->iGetNbObjects()>15)
+        if (m_poModel->iGetNbObjects()>5)
         {
-            MoveSphere();
+            MoveSphere(); // Permet le mouvement fluide de la sphère
+            m_poCtrl->timerEvent(); // Permet le mouvement fluide du palet
         }
-
         glLoadIdentity();
         glFlush();
     }
@@ -166,8 +166,9 @@ void CGLArea::mousePressEvent(QMouseEvent* _event)
 {
     //convertMouseToRay(_event->x(),_event->y(),&_poRayOrigin, &_poRayDir);
 
-
-
+    CVector3 vect;
+    m_poModel->poGetObject(4)->GetSpeed(&vect);
+    qDebug()<<vect.fGetX()<<vect.fGetY()<<vect.fGetZ();
 
     //Sphere->SetSpeed(&oSpeed);
 
@@ -249,23 +250,19 @@ void CGLArea::MoveSphere ()
 {
     CVector3 oPos(0,0,0);
     CVector3 oSpeed(0,0,0);
+    CVector3 _poRayOrigin;
+    CVector3 _poRayDir;
     CObject* Sphere;
 
 
-    Sphere=m_poModel->poGetObject(5);
+    Sphere=m_poModel->poGetObject(4);
     Sphere->vGetPosition(&oPos);
     Sphere->GetSpeed(&oSpeed);
     oPos.vSetX(oPos.fGetX()+oSpeed.fGetX());
     oPos.vSetY(oPos.fGetY()+oSpeed.fGetY());
     oPos.vSetZ(oPos.fGetZ()+oSpeed.fGetZ());
-    m_poModel->poGetObject(5)->vSetPosition(&oPos);
+    m_poModel->poGetObject(4)->vSetPosition(&oPos);
 
-    CVector3 _poRayOrigin;
-    CVector3 _poRayDir;
-    //CVector3 oSpeed(0,0,0);
-    //CObject* Sphere = new CSphere();
-
-    //Sphere=m_poModel->poGetObject(5);
     Sphere->vGetPosition(&_poRayOrigin);
     Sphere->GetSpeed(&_poRayDir);
     _poRayOrigin.vSetY(_poRayOrigin.fGetY()-1);
@@ -278,6 +275,6 @@ void CGLArea::MoveSphere ()
     Sphere=0;
     delete Sphere;
 
-    //qDebug()<<_poRayDir.fGetX()<<_poRayDir.fGetY()<<_poRayDir.fGetZ();*/
+    //qDebug()<<_poRayDir.fGetX()<<_poRayDir.fGetY()<<_poRayDir.fGetZ();
 }
 

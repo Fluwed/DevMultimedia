@@ -34,7 +34,8 @@ public:
 
     void            convertMouseToRay(int _x, int _y, CVector3 *_poRayOrigin, CVector3 *_poRayDir);
 
-    void MoveSphere();
+    void            MoveSphere();
+
 protected:
     void            initializeGL();
     void            paintGL();

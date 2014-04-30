@@ -22,6 +22,8 @@ public:
     void            vSetControl(CControl* _oCtrl);
     void            vSetModel(CModel* _poMdl);
 
+    void keyPressEvent(QKeyEvent *_event);
+    void keyReleaseEvent(QKeyEvent *_event);
 private:
     void            vResetList(void);
 

@@ -2,6 +2,7 @@
 #include "CBrique.h"
 #include "CSphere.h"
 #include <qdebug.h>
+#include <QTimer>
 
 /*---------------------------------------------------------------------------*/
 CControl::CControl(CModel* _model)
@@ -40,9 +41,9 @@ void CControl::vDelObject()
 /*---------------------------------------------------------------------------*/
 int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de dire quel cube est sélectionné
 {
-    int isPicked=0;
+    int isPicked=-1;
     float distance=10000;
-    for (int i=6;i<m_poModel->iGetNbObjects();i++)
+    for (int i=5;i<m_poModel->iGetNbObjects();i++)
     {
         CObject* Cube;
         CObject* Sphere;
@@ -51,9 +52,8 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
         CVector3 poPos;
         int iFace;
         Cube=m_poModel->poGetObject(i);
-        Sphere=m_poModel->poGetObject(5);
+        Sphere=m_poModel->poGetObject(4);
         Sphere->vGetPosition(&poPos);
-
         if (Cube->iIsPicked(_poOrigin, _poDir, &poInter, &iFace)==1)
         {
             if(poInter.fDistance(*_poOrigin)<distance)
@@ -63,7 +63,6 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
                 isPicked=Cube->iGetID();
                 Cube->vSetPicked(iFace);
                 Sphere->GetSpeed(&Speed);
-
                 Speed.vSetZ(-Speed.fGetZ());
                 Sphere->SetSpeed(&Speed);
                 m_poModel->vDel(isPicked);
@@ -80,8 +79,8 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
             Sphere->GetSpeed(&Speed);
             if (Speed.fGetY()>0)
             {
-            Speed.vSetY(-Speed.fGetY());
-            Sphere->SetSpeed(&Speed);
+                Speed.vSetY(-Speed.fGetY());
+                Sphere->SetSpeed(&Speed);
             }
         }
         if (poPos.fGetY()<-25)
@@ -90,8 +89,8 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
             Sphere->GetSpeed(&Speed);
             if (Speed.fGetY()<0)
             {
-            Speed.vSetY(-Speed.fGetY());
-            Sphere->SetSpeed(&Speed);
+                Speed.vSetY(-Speed.fGetY());
+                Sphere->SetSpeed(&Speed);
             }
         }
         if (poPos.fGetZ()>17)
@@ -99,24 +98,24 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
             Sphere->GetSpeed(&Speed);
             if (Speed.fGetZ()>0)
             {
-            Speed.vSetZ(-Speed.fGetZ());
-            Sphere->SetSpeed(&Speed);
+                Speed.vSetZ(-Speed.fGetZ());
+                Sphere->SetSpeed(&Speed);
             }
         }
 
         if(poPos.fGetZ()<-14 )
         {
-            qDebug()<<" Z :"<<poPos.fGetZ()<< " Y : "<<poPos.fGetY();
             Sphere->GetSpeed(&Speed);
             if (Speed.fGetZ()<0)
             {
-            Speed.vSetZ(-Speed.fGetZ());
-            Sphere->SetSpeed(&Speed);
+                Speed.vSetZ(-Speed.fGetZ());
+                Sphere->SetSpeed(&Speed);
             }
         }
 
         //qDebug()<<" Z :"<<poPos.fGetZ()<< " Y : "<<poPos.fGetY();
     }
+
     return isPicked;
 }
 
@@ -131,4 +130,40 @@ void CControl::vResetPicked() // Permet de déselectionner tout les cubes
     }
 }
 
+void CControl::vMovePalet(int Key, bool is_moving)
+{
+
+    if (Key==Qt::Key_Q)
+    {
+        is_moving_left = is_moving;
+    }
+    if (Key==Qt::Key_D)
+    {
+        is_moving_right = is_moving;
+    }
+}
+
+void CControl::timerEvent()
+{
+    {
+        if (is_moving_left)
+        {
+            palet=m_poModel->poGetObject(5);
+            palet->vGetPosition(&oPos);
+            oPos.vSetY(oPos.fGetY()-0.8);
+            oPos.vSetZ(oPos.fGetZ());
+            palet->vSetPosition(&oPos);
+        }
+
+        if (is_moving_right)
+        {
+            palet=m_poModel->poGetObject(5);
+            palet->vGetPosition(&oPos);
+            oPos.vSetY(oPos.fGetY()+0.8);
+            oPos.vSetZ(oPos.fGetZ());
+            palet->vSetPosition(&oPos);
+        }
+
+    }
+}
 

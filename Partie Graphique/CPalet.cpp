@@ -91,7 +91,7 @@ int CPalet::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInters
     int iStatus = 0;
     int iPickedFace = -1; // -1 will mean "not initialized". Will then take the
     // value of the index of the side of the cube.
-    float fClosestDistance = 100000; // Something close to infinity.
+    float fClosestDistance = 1.5; // Something close to infinity.
     CVector3 oClosestIntersection; // Last found closest intersection
 
 
@@ -165,9 +165,13 @@ int CPalet::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInters
         _poIntersection->vSet(oClosestIntersection);
         *_iPickedFace = iPickedFace;
         iStatus = 1;
+        //qDebug()<<iStatus;
+        //qDebug()<<"Dist :"<<fClosestDistance;
     }
     return iStatus;
+
 }
+
 
 void CPalet::GetSpeed(CVector3 *_oSpeed)
 {

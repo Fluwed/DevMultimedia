@@ -166,8 +166,8 @@ int CBrique::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInter
         _poIntersection->vSet(oClosestIntersection);
         *_iPickedFace = iPickedFace;
         iStatus = 1;
-        qDebug()<<iStatus;
-        qDebug()<<"Dist :"<<fClosestDistance;
+        //qDebug()<<iStatus;
+        //qDebug()<<"Dist :"<<fClosestDistance;
     }
     return iStatus;
 
