@@ -55,9 +55,10 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
         CVector3 poInter;
         int iFace;
         Brique=m_poModel->poGetObject(i);
-
         if (Brique->iIsPicked(_poOrigin, _poDir, &poInter, &iFace)==1)
         {
+
+            qDebug()<<poPos.fGetX()<<poPos.fGetY()<<poPos.fGetZ();
             if(poInter.fDistance(*_poOrigin)<distance)
             {
                 distance=poInter.fDistance(*_poOrigin);
@@ -68,37 +69,44 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
                 Speed.vSetZ(-Speed.fGetZ());
                 Sphere->SetSpeed(&Speed);
                 m_poModel->vDel(isPicked);
-
-                Brique=0;
-                delete Brique;
-                Sphere=0;
-                delete Sphere;
             }
         }
     }
 
     /*-------------------------     PALET    -------------------------------------*/
-    CObject* Brique;
+    CObject* Palet;
     CVector3 poInter;
     int iFace;
-    Brique=m_poModel->poGetObject(4);
 
-    if (Brique->iIsPicked(_poOrigin, _poDir, &poInter, &iFace)==1)
+    Palet=m_poModel->poGetObject(4);
+
+    if (Palet->iIsPicked(_poOrigin, _poDir, &poInter, &iFace)==1)
     {
         if(poInter.fDistance(*_poOrigin)<distance)
         {
             distance=poInter.fDistance(*_poOrigin);
             vResetPicked();
-            isPicked=Brique->iGetID();
-            Brique->vSetPicked(iFace);
+            isPicked=Palet->iGetID();
+            Palet->vSetPicked(iFace);
             Sphere->GetSpeed(&Speed);
-            Speed.vSetZ(-Speed.fGetZ());
+
+            /*------  INTERACTION SELON LA POSITION DE LA SPHERE SUR LE PALET  -------*/
+            float iCoef;
+            float iSphereSpeed;
+            CVector3 poPalet;
+
+            Palet->vGetPosition(&poPalet);
+            iCoef=(poPalet.fGetY() - poInter.fGetY())/poPalet.fGetY(); //iCoef entre -1 et 1
+
+            if (iCoef<0) // iCoef entre 0 et 1
+            {
+                iCoef=iCoef*-1;
+            }
+
+            iSphereSpeed=Speed.fGetZ();
+            Speed.vSetZ(-iSphereSpeed+iCoef);
             Sphere->SetSpeed(&Speed);
 
-            Brique=0;
-            delete Brique;
-            Sphere=0;
-            delete Sphere;
         }
     }
     /*----------------------------------------------------------------------------*/

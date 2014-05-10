@@ -143,8 +143,8 @@ int CBrique::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInter
             // Validation of the intersecion: make sure it is in the square defined by the two vectors.
             // by projecting the intersection on each vetors.
             CVector3 OM = ptM - ptO;
-            float p1 = OM.fDot(OA) / OA.fNorm();
-            float p2 = OM.fDot(OB) / OB.fNorm();
+            float p1 = OM.fDot(OA) / (OA.fNorm()*OA.fNorm());
+            float p2 = OM.fDot(OB) / (OB.fNorm()*OB.fNorm());
 
             if((p1 > 0) && (p1 < 1) && (p2 > 0) && (p2 < 1))
             {
@@ -166,8 +166,7 @@ int CBrique::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInter
         _poIntersection->vSet(oClosestIntersection);
         *_iPickedFace = iPickedFace;
         iStatus = 1;
-        //qDebug()<<iStatus;
-        //qDebug()<<"Dist :"<<fClosestDistance;
+
     }
     return iStatus;
 

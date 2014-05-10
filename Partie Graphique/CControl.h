@@ -18,7 +18,7 @@ public:
     int             iCheckPicked(CVector3* _poOrigin, CVector3* _poDir);
     void            vResetPicked();
     void            vMovePalet(int Key, bool pressed);
-    bool is_moving_left, is_moving_right;
+    bool is_moving_left=false, is_moving_right=false;
     CObject* palet;
     CVector3 oPos;
 

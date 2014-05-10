@@ -265,16 +265,8 @@ void CGLArea::MoveSphere ()
 
     Sphere->vGetPosition(&_poRayOrigin);
     Sphere->GetSpeed(&_poRayDir);
-    _poRayOrigin.vSetY(_poRayOrigin.fGetY()-1);
-    for (int i=0;i<=2;i++)// Détection des collision a partir de 3 trajectoires
-    {
-    _poRayOrigin.vSetY(_poRayOrigin.fGetY()+i);
+
     m_poCtrl->iCheckPicked(&_poRayOrigin, &_poRayDir);
-    }
 
-    Sphere=0;
-    delete Sphere;
-
-    //qDebug()<<_poRayDir.fGetX()<<_poRayDir.fGetY()<<_poRayDir.fGetZ();
 }
 
