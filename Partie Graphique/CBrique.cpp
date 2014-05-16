@@ -31,11 +31,21 @@ static const float m_fVertices[8][3] = {
 /*---------------------------------------------------------------------------*/
 CBrique::CBrique()
 {
+
 }
 
 /*---------------------------------------------------------------------------*/
 CBrique::CBrique(int _id) : CObject(_id)
 {
+    m_iId=_id;
+    m_iDurability=1;
+}
+
+/*---------------------------------------------------------------------------*/
+CBrique::CBrique(int _id, int _iDurability)
+{
+    m_iId=_id;
+    m_iDurability=_iDurability;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -83,8 +93,28 @@ void CBrique::vGetSideColor(int _face, CVector3* _poColor)
         _poColor->vSet(1.0, 0.0, 1.0);
         break;
     }
-    if (iGetCurFace()!=-1 && iGetCurFace()==_face)
-        _poColor->vSet(1.0, 1.0, 1.0);
+
+    switch(m_iDurability)
+    {
+    case 0:
+        _poColor->vSet(0.32, 0.32, 0.32);
+        break;
+    case 1:
+        _poColor->vSet(1.0, 1.0, 0.0);
+        break;
+    case 2:
+        _poColor->vSet(0.75, 0.75, 0.75);
+        break;
+    case 3:
+        _poColor->vSet(0.0, 0.0, 1.0);
+        break;
+    case 4:
+        _poColor->vSet(1.0, 0.0, 0.0);
+        break;
+    case 5:
+        _poColor->vSet(0.0, 1.0, 0.0);
+        break;
+    }
 }
 
 int CBrique::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersection, int* _iPickedFace)
@@ -172,13 +202,22 @@ int CBrique::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInter
 
 }
 
-void CBrique::GetSpeed(CVector3 *_oSpeed)
+void CBrique::vGetSpeed(CVector3 *_oSpeed)
 {
 
 }
 
-void CBrique::SetSpeed(CVector3 *_oSpeed)
+void CBrique::vSetSpeed(CVector3 *_oSpeed)
 {
 
 }
 
+int CBrique::iGetDurability()
+{
+    return m_iDurability;
+}
+
+void CBrique::vSetDurability(int _iDurability)
+{
+    m_iDurability=_iDurability;
+}

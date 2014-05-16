@@ -30,6 +30,7 @@ static const float m_fVertices[8][3] = {
 /*---------------------------------------------------------------------------*/
 CPalet::CPalet()
 {
+    m_iId=-2;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -173,14 +174,23 @@ int CPalet::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInters
 }
 
 
-void CPalet::GetSpeed(CVector3 *_oSpeed)
+void CPalet::vGetSpeed(CVector3 *_oSpeed)
 {
 
 }
 
-void CPalet::SetSpeed(CVector3 *_oSpeed)
+void CPalet::vSetSpeed(CVector3 *_oSpeed)
 {
 
 }
 
+int CPalet::iGetDurability()
+{
+
+}
+
+void CPalet::vSetDurability(int _iDurability)
+{
+
+}
 

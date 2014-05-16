@@ -2,32 +2,27 @@
 #include <QtGui>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QLabel>
 
 /*---------------------------------------------------------------------------*/
 CView::CView(QWidget *parent)
     : QWidget(parent)
 {
-    QPushButton* oAddBtn = new QPushButton(tr("&Add"));
-    oAddBtn->show();
-    QPushButton* oDelBtn = new QPushButton(tr("&Delete"));
-    oDelBtn->show();
+    QLabel* label= new QLabel("Pour lancer la partie appuyer sur E.     Contrôles: Q = Gauche / D = Droite          (⌐■_■)");
 
     m_poGlArea = new CGLArea();
 
-    connect(oAddBtn, SIGNAL(clicked()), this, SLOT(vAddFunction()));
-    connect(oDelBtn, SIGNAL(clicked()), this, SLOT(vDelFunction()));
-
     QVBoxLayout* oBtnRLayout = new QVBoxLayout();
-    oBtnRLayout->addWidget(oAddBtn, Qt::AlignTop);
-    oBtnRLayout->addWidget(oDelBtn);
-    oBtnRLayout->addStretch();
+    oBtnRLayout->addWidget(m_poGlArea);
+    oBtnRLayout->addWidget(label);
 
-    QHBoxLayout* oBtnHLayout = new QHBoxLayout();
-    oBtnHLayout->addWidget(m_poGlArea);
-    oBtnHLayout->addLayout(oBtnRLayout);
-
-    setLayout(oBtnHLayout);
+    setLayout(oBtnRLayout);
     setWindowTitle(tr("Look at the cubes"));
+
+    QTimer::singleShot(100, this, SLOT(vSetGame()));
+
+
+
 }
 
 /*---------------------------------------------------------------------------*/
@@ -51,14 +46,11 @@ void CView::vSetModel(CModel* _poMdl)
 
 
 /*---------------------------------------------------------------------------*/
-void CView::vAddFunction(void)
+void CView::vSetGame(void)
 {
-    for (int i=0;i<20;i++)
-    {
-    m_poCtrl->vAddObject(iNbCube);
-    iNbCube=iNbCube+1;
+    m_poCtrl->vAddObject();
     m_poGlArea->updateGL();
-    }
+
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), m_poGlArea, SLOT(updateGL()));
     timer->start(0);
@@ -72,11 +64,27 @@ void CView::vDelFunction(void)
 
 }
 
+/*---------------------------------------------------------------------------*/
+void CView::vStartGame()
+{
+    m_poCtrl->vStart();
+}
+
+/*---------------------------------------------------------------------------*/
 void CView::keyPressEvent(QKeyEvent* _event)
 {
     m_poCtrl->vMovePalet(_event->key(),true);
+    if (_event->key()==Qt::Key_E)
+    {
+        /*QTimer *timer = new QTimer(this);
+        connect(timer, SIGNAL(timeout()), this, SLOT(vStartGame()));
+        timer->start(3000);*/
+         QTimer::singleShot(2000, this, SLOT(vStartGame()));
+    }
+
 }
 
+/*---------------------------------------------------------------------------*/
 void CView::keyReleaseEvent(QKeyEvent* _event)
 {
     m_poCtrl->vMovePalet(_event->key(),false);

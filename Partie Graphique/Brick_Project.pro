@@ -23,8 +23,7 @@ SOURCES += main.cpp \
     CShpere.cpp \
     CPalet.cpp \
     CMurH.cpp \
-    CMurV.cpp \
-    CMovePalet.cpp
+    CMurV.cpp
 
 HEADERS  += \
     CView.h \
@@ -37,5 +36,4 @@ HEADERS  += \
     CSphere.h \
     CPalet.h \
     CMurH.h \
-    CMurV.h \
-    CMovePalet.h
+    CMurV.h

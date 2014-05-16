@@ -6,7 +6,7 @@
 class CObject
 {
 private:
-    int         m_iId;
+
     int         m_iCurFace=-1;
 
 
@@ -14,6 +14,9 @@ protected:
      CVector3    m_oPosition;
 
 public:
+    int         m_iId;
+    int         m_iDurability;
+
     CObject();
     CObject(int _iId);
 
@@ -30,9 +33,11 @@ public:
     virtual void vGetSideColor(int _face, CVector3* _poColor) = 0;
     virtual int iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInter, int* _iFace)=0;
 
-    virtual void GetSpeed(CVector3 *_oSpeed) = 0;
-    virtual void SetSpeed(CVector3 *_oSpeed) = 0;
+    virtual void vGetSpeed(CVector3 *_oSpeed) = 0;
+    virtual void vSetSpeed(CVector3 *_oSpeed) = 0;
 
+    virtual void vSetDurability(int _iDurability) = 0;
+    virtual int iGetDurability() = 0;
 
 };
 

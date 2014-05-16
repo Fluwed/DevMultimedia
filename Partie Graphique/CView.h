@@ -28,9 +28,9 @@ private:
     void            vResetList(void);
 
 public slots:
-    void            vAddFunction(void);
+    void            vSetGame(void);
     void            vDelFunction(void);
-signals:
+    void            vStartGame(void);
 
 };
 

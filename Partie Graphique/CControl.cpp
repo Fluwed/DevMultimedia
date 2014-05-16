@@ -8,6 +8,7 @@
 CControl::CControl(CModel* _model)
 {
     m_poModel = _model;
+    m_fSpeed = 0.6;
 }
 
 
@@ -16,11 +17,23 @@ CControl::~CControl()
 {
 }
 
+/*---------------------------------------------------------------------------*/
+int CControl::fSpeed()
+{
+    return m_fSpeed;
+}
 
 /*---------------------------------------------------------------------------*/
-void CControl::vAddObject(int _iId)
+void CControl::setFSpeed(int fSpeed)
 {
-    m_poModel->vAdd(_iId);
+    m_fSpeed = fSpeed;
+}
+
+/*---------------------------------------------------------------------------*/
+void CControl::vAddObject()
+{
+    m_poModel->vAdd();
+    m_poModel->vNewLife();
     vResetPicked();
 }
 
@@ -58,17 +71,26 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
         if (Brique->iIsPicked(_poOrigin, _poDir, &poInter, &iFace)==1)
         {
 
-            qDebug()<<poPos.fGetX()<<poPos.fGetY()<<poPos.fGetZ();
+            //qDebug()<<poPos.fGetX()<<poPos.fGetY()<<poPos.fGetZ();
             if(poInter.fDistance(*_poOrigin)<distance)
             {
                 distance=poInter.fDistance(*_poOrigin);
                 vResetPicked();
                 isPicked=Brique->iGetID();
                 Brique->vSetPicked(iFace);
-                Sphere->GetSpeed(&Speed);
+                Sphere->vGetSpeed(&Speed);
                 Speed.vSetZ(-Speed.fGetZ());
-                Sphere->SetSpeed(&Speed);
-                m_poModel->vDel(isPicked);
+                Sphere->vSetSpeed(&Speed);
+                if (Brique->iGetDurability()<2)
+                {
+                    m_poModel->vDel(isPicked);
+                }
+                else
+                {
+                    int Durability;
+                    Durability=Brique->iGetDurability();
+                    Brique->vSetDurability(Durability-1);
+                }
             }
         }
     }
@@ -88,7 +110,7 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
             vResetPicked();
             isPicked=Palet->iGetID();
             Palet->vSetPicked(iFace);
-            Sphere->GetSpeed(&Speed);
+            Sphere->vGetSpeed(&Speed);
 
             /*------  INTERACTION SELON LA POSITION DE LA SPHERE SUR LE PALET  -------*/
             float iCoef;
@@ -96,16 +118,35 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
             CVector3 poPalet;
 
             Palet->vGetPosition(&poPalet);
-            iCoef=(poPalet.fGetY() - poInter.fGetY())/poPalet.fGetY(); //iCoef entre -1 et 1
+            iCoef=(poPalet.fGetY() - poInter.fGetY())/poPalet.fGetY(); //iCoef entre -1 et 1 mais il existe quelque cas où ce n'est pas vrai on utilise donc des if
 
-            if (iCoef<0) // iCoef entre 0 et 1
+            iCoef=iCoef*2;
+            iSphereSpeed=Speed.fGetZ();
+            if (iCoef>0.4)
             {
-                iCoef=iCoef*-1;
+                iCoef=0.4;
             }
 
-            iSphereSpeed=Speed.fGetZ();
-            Speed.vSetZ(-iSphereSpeed+iCoef);
-            Sphere->SetSpeed(&Speed);
+            if (iCoef<-0.4)
+            {
+                iCoef=-0.4;
+            }
+
+            if (iCoef<=0)
+            {
+                Speed.vSetZ(m_fSpeed+iCoef);
+            }
+
+            if (iCoef>0)
+            {
+                Speed.vSetZ(m_fSpeed-iCoef);
+            }
+
+
+            //Speed.vSetZ(-iSphereSpeed);
+            Speed.vSetY(-iCoef);
+            //qDebug()<<iCoef;
+            Sphere->vSetSpeed(&Speed);
 
         }
     }
@@ -114,40 +155,40 @@ int CControl::iCheckPicked(CVector3 *_poOrigin, CVector3 *_poDir) // Permet de d
     if (poPos.fGetY()>25)
     {
 
-        Sphere->GetSpeed(&Speed);
+        Sphere->vGetSpeed(&Speed);
         if (Speed.fGetY()>0)
         {
             Speed.vSetY(-Speed.fGetY());
-            Sphere->SetSpeed(&Speed);
+            Sphere->vSetSpeed(&Speed);
         }
     }
     if (poPos.fGetY()<-25)
     {
 
-        Sphere->GetSpeed(&Speed);
+        Sphere->vGetSpeed(&Speed);
         if (Speed.fGetY()<0)
         {
             Speed.vSetY(-Speed.fGetY());
-            Sphere->SetSpeed(&Speed);
+            Sphere->vSetSpeed(&Speed);
         }
     }
     if (poPos.fGetZ()>17)
     {
-        Sphere->GetSpeed(&Speed);
+        Sphere->vGetSpeed(&Speed);
         if (Speed.fGetZ()>0)
         {
             Speed.vSetZ(-Speed.fGetZ());
-            Sphere->SetSpeed(&Speed);
+            Sphere->vSetSpeed(&Speed);
         }
     }
 
     if(poPos.fGetZ()<-14 )
     {
-        Sphere->GetSpeed(&Speed);
+        Sphere->vGetSpeed(&Speed);
         if (Speed.fGetZ()<0)
         {
             Speed.vSetZ(-Speed.fGetZ());
-            Sphere->SetSpeed(&Speed);
+            Sphere->vSetSpeed(&Speed);
         }
     }
     return isPicked;
@@ -177,6 +218,11 @@ void CControl::vMovePalet(int Key, bool is_moving)
     }
 }
 
+void CControl::vStart()
+{
+        m_poModel->vSetSpeed(m_fSpeed);
+}
+
 void CControl::timerEvent()
 {
     {
@@ -184,7 +230,7 @@ void CControl::timerEvent()
         {
             palet=m_poModel->poGetObject(4);
             palet->vGetPosition(&oPos);
-            oPos.vSetY(oPos.fGetY()-0.5);
+            oPos.vSetY(oPos.fGetY()-0.75);
             oPos.vSetZ(oPos.fGetZ());
             palet->vSetPosition(&oPos);
         }
@@ -193,7 +239,7 @@ void CControl::timerEvent()
         {
             palet=m_poModel->poGetObject(4);
             palet->vGetPosition(&oPos);
-            oPos.vSetY(oPos.fGetY()+0.5);
+            oPos.vSetY(oPos.fGetY()+0.75);
             oPos.vSetZ(oPos.fGetZ());
             palet->vSetPosition(&oPos);
         }

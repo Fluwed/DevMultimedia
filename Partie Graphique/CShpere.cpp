@@ -10,16 +10,17 @@
 /*---------------------------------------------------------------------------*/
 CSphere::CSphere()
 {
+    m_iId=-3;
     vGenerateData();
-    m_oSpeed.vSet(0.0,0.85,0.5);
+    m_oSpeed.vSet(0.0,0.0,0.0);
 }
 
 /*---------------------------------------------------------------------------*/
 CSphere::CSphere(int _id) : CObject(_id)
 {
     vGenerateData();
-    //m_oSpeed.vSet(0.0,0.025,0.5);
 }
+
 
 /*---------------------------------------------------------------------------*/
 CSphere::~CSphere()
@@ -182,16 +183,26 @@ void CSphere::vGenerateData(void)
 
 }
 
-void CSphere::GetSpeed(CVector3* _oSpeed)
+void CSphere::vGetSpeed(CVector3* _oSpeed)
 {
     _oSpeed->vSetX(m_oSpeed.fGetX());
     _oSpeed->vSetY(m_oSpeed.fGetY());
     _oSpeed->vSetZ(m_oSpeed.fGetZ());
 }
 
-void CSphere::SetSpeed(CVector3* _oSpeed)
+void CSphere::vSetSpeed(CVector3* _oSpeed)
 {
     m_oSpeed.vSetX(_oSpeed->fGetX());
     m_oSpeed.vSetY(_oSpeed->fGetY());
     m_oSpeed.vSetZ(_oSpeed->fGetZ());
+}
+
+int CSphere::iGetDurability()
+{
+
+}
+
+void CSphere::vSetDurability(int _iDurability)
+{
+
 }

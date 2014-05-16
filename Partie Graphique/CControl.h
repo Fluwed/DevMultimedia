@@ -7,22 +7,29 @@ class CControl
 {
 private:
     CModel*         m_poModel;
+    float           m_fSpeed;
 
 
 public:
     CControl(CModel *_model);
     ~CControl();
 
-    void            vAddObject(int _iId);
+    CObject*        palet;
+    CVector3        oPos;
+
+    void            vAddObject();
     void            vDelObject();
     int             iCheckPicked(CVector3* _poOrigin, CVector3* _poDir);
     void            vResetPicked();
     void            vMovePalet(int Key, bool pressed);
-    bool is_moving_left=false, is_moving_right=false;
-    CObject* palet;
-    CVector3 oPos;
+    void            vStart();
+    bool            is_moving_left=false;
+    bool            is_moving_right=false;
 
     void timerEvent();
+
+    int fSpeed();
+    void setFSpeed(int fSpeed);
 };
 
 #endif // CControl_H

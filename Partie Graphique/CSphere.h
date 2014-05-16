@@ -29,8 +29,11 @@ public:
 
     virtual int         iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersection, int* _iPickedFace);
 
-    virtual void GetSpeed(CVector3 *_oSpeed);
-    virtual void SetSpeed(CVector3 *_oSpeed);
+    virtual void vGetSpeed(CVector3 *_oSpeed);
+    virtual void vSetSpeed(CVector3 *_oSpeed);
+
+    virtual void vSetDurability(int _iDurability);
+    virtual int iGetDurability();
 };
 
 #endif // CSPHERE_H

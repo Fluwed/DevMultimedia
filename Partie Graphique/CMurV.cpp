@@ -93,13 +93,22 @@ int CMurV::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poInterse
 
 }
 
-void CMurV::GetSpeed(CVector3 *_oSpeed)
+void CMurV::vGetSpeed(CVector3 *_oSpeed)
 {
 
 }
 
-void CMurV::SetSpeed(CVector3 *_oSpeed)
+void CMurV::vSetSpeed(CVector3 *_oSpeed)
 {
 
 }
 
+int CMurV::iGetDurability()
+{
+
+}
+
+void CMurV::vSetDurability(int _iDurability)
+{
+
+}

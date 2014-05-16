@@ -87,7 +87,7 @@ void CGLArea::resizeGL(int _width, int _height)
 /*---------------------------------------------------------------------------*/
 void CGLArea::initializeGL()
 {
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearColor(1.0, 1.0, 1.0, 0.0); //Couleur du Background
 
     glEnable(GL_DEPTH_TEST);
     glShadeModel(GL_FLAT);
@@ -167,7 +167,7 @@ void CGLArea::mousePressEvent(QMouseEvent* _event)
     //convertMouseToRay(_event->x(),_event->y(),&_poRayOrigin, &_poRayDir);
 
     CVector3 vect;
-    m_poModel->poGetObject(5)->GetSpeed(&vect);
+    m_poModel->poGetObject(5)->vGetSpeed(&vect);
     qDebug()<<vect.fGetX()<<vect.fGetY()<<vect.fGetZ();
 
     //Sphere->SetSpeed(&oSpeed);
@@ -257,14 +257,14 @@ void CGLArea::MoveSphere ()
 
     Sphere=m_poModel->poGetObject(5);
     Sphere->vGetPosition(&oPos);
-    Sphere->GetSpeed(&oSpeed);
+    Sphere->vGetSpeed(&oSpeed);
     oPos.vSetX(oPos.fGetX()+oSpeed.fGetX());
     oPos.vSetY(oPos.fGetY()+oSpeed.fGetY());
     oPos.vSetZ(oPos.fGetZ()+oSpeed.fGetZ());
     m_poModel->poGetObject(5)->vSetPosition(&oPos);
 
     Sphere->vGetPosition(&_poRayOrigin);
-    Sphere->GetSpeed(&_poRayDir);
+    Sphere->vGetSpeed(&_poRayDir);
 
     m_poCtrl->iCheckPicked(&_poRayOrigin, &_poRayDir);
 
