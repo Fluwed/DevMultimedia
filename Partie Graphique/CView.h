@@ -17,6 +17,7 @@ private:
     QLabel*         m_poGameScore;
     QTimer*         m_poClock;
     int             m_iTimer;
+    int             m_iFinalScore;
     
 public:
     CView(QWidget *parent = 0);
@@ -35,6 +36,7 @@ public slots:
     void            vStartGame(void);
 
     void updateTime();
+    void vUpdateGame(void);
 };
 
 #endif // CVIew_H

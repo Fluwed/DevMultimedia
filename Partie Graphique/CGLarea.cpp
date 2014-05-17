@@ -153,15 +153,16 @@ void CGLArea::paintGL()
         }
         if (m_poModel->iGetNbObjects()>5) // Tout ce qui est lié à l'animation dynamique
         {
-            if (m_poCtrl->m_bStickySphere==true)
+            if (m_poCtrl->m_bStickySphere==true) // Permet que la sphère colle au palet tant que le jeu n'a pas commencé.
             {
-                m_poCtrl->vSetNewLife(); // Permet de que la sphère colle au palet tant que le jeu n'a pas commencé.
+                m_poCtrl->vSetNewLife();
             }
-            if (m_poCtrl->m_bStart==true)
+            /*if (m_poCtrl->m_bStart==true) // Décompte de 5 secondes avant le lancement de la partie
             {
                 m_poCtrl->setBStart(false);
                 QTimer::singleShot(5000, this, SLOT(vStartGame()));
-            }
+            }*/
+
             m_poCtrl->timerEvent(); // Permet le mouvement fluide du palet
             MoveSphere(); // Permet le mouvement fluide de la sphère
         }
@@ -255,7 +256,7 @@ void CGLArea::convertMouseToRay(int _x, int _y, CVector3* _poRayOrigin, CVector3
     _poRayDir->iNormalize();
 }
 
-void CGLArea::MoveSphere ()
+void CGLArea::MoveSphere()
 {
     CVector3 oPos(0,0,0);
     CVector3 oSpeed(0,0,0);

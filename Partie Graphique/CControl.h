@@ -8,14 +8,17 @@ class CControl
 private:
     CModel*         m_poModel;
     float           m_fSpeed;
-    int             m_iLife;
+    int             m_iLvl;
+    int             m_iDifficulty;
+
 
 
 public:
     CControl(CModel *_model);
     ~CControl();
 
-    bool            m_bStart;
+    int             m_iScore;
+    int             m_iLife;
     bool            m_bStickySphere;
     CObject*        palet;
     CVector3        oPos;
@@ -32,10 +35,10 @@ public:
     int             fSpeed();
     void            setFSpeed(int fSpeed);
     void            vSetNewLife();
-    bool            bStart() const;
-    void            setBStart(bool bIsStarted);
     bool            bStickySphere() const;
     void            setBStickySphere(bool bStickySphere);
+    void            vResetGame();
+    void            vLevelFinished();
 };
 
 #endif // CControl_H

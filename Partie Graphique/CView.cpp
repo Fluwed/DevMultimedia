@@ -7,14 +7,14 @@
 CView::CView(QWidget *parent)
     : QWidget(parent)
 {
-    QLabel* label= new QLabel("Pour lancer la partie appuyer sur E.     Contrôles: Q = Gauche / D = Droite          (⌐■_■)");
-    m_poTimer= new QLabel(" ");
+    QLabel* label= new QLabel("Pour lancer la boule, appuyer sur E.     Contrôles: Q = Gauche / D = Droite          (⌐■_■)");
+    m_poGameScore= new QLabel(" ");
 
     m_poGlArea = new CGLArea();
 
     QVBoxLayout* oBtnRLayout = new QVBoxLayout();
     oBtnRLayout->addWidget(m_poGlArea);
-    oBtnRLayout->addWidget(m_poTimer);
+    oBtnRLayout->addWidget(m_poGameScore);
     oBtnRLayout->addWidget(label);
 
 
@@ -23,7 +23,9 @@ CView::CView(QWidget *parent)
 
     QTimer::singleShot(100, this, SLOT(vSetGame()));
 
-
+    QTimer *game = new QTimer(this);
+    connect(game, SIGNAL(timeout()), this, SLOT(vUpdateGame()));
+    game->start(100);
 
 }
 
@@ -70,8 +72,7 @@ void CView::keyPressEvent(QKeyEvent* _event)
     m_poCtrl->vMovePalet(_event->key(),true);
     if (_event->key()==Qt::Key_E)
     {
-        m_poCtrl->setBStart(true);
-        m_poTimer->setText("Début de la partie dans : 5 sec");
+        m_poGameScore->setText("Lancement dans : 5 sec");
         m_iTimer=5;
 
         m_poClock = new QTimer(this);
@@ -90,11 +91,30 @@ void CView::keyReleaseEvent(QKeyEvent* _event)
 void CView::updateTime()
 {
     m_iTimer--;
-    m_poTimer->setText("Début de la partie dans : " + QString::number(m_iTimer)+ "sec");
+    m_poGameScore->setText("Lancement dans : " + QString::number(m_iTimer)+ " sec");
     if (m_iTimer==0)
     {
         m_poClock->stop();
-        m_poTimer->setText("Score : 0     ██████      ");
+        m_poCtrl->setBStickySphere(false);
+        m_poCtrl->vStart();
+    }
+}
+
+void CView::vUpdateGame()
+{
+    /*----------------------------------- Affichage score une fois la partie commencée --------------------------------------*/
+    if (m_poCtrl->bStickySphere()==false)
+    {
+        m_poGameScore->setText("Score : "+ QString::number(m_poCtrl->m_iScore) +" ------ Vie Restantes : "+ QString::number(m_poCtrl->m_iLife));
     }
 
+    /*----------------------------------- Fonction de Gestion des niveaux --------------------------------------*/
+    m_poCtrl->vLevelFinished();
+    /*----------------------------------- Affichage score une fois la partie terminée et remise à zéro des variables --------------------------------------*/
+    if (m_poCtrl->m_iLife==0)
+    {
+        m_iFinalScore=m_poCtrl->m_iScore;
+        m_poGameScore->setText("Partie terminée avec un score de "+ QString::number(m_iFinalScore) +". Appuyer sur E pour rejouer");
+        m_poCtrl->vResetGame();
+    }
 }

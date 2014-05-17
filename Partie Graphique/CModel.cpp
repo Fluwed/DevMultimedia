@@ -61,7 +61,6 @@ void CModel::vSetGame()
 
     m_oDatas.append(poPalet);
     m_oDatas.append(poSphere);
-    vLoadLevel(3);
 
 }
 

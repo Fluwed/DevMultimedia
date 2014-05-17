@@ -12,8 +12,10 @@ CControl::CControl(CModel* _model)
     is_moving_right=false;
     m_fSpeed = 0.6;
     m_iLife=3;
-    m_bStart=false;
     m_bStickySphere=true;
+    m_iScore=0;
+    m_iLvl=1;
+    m_iDifficulty=1;
 }
 
 
@@ -33,19 +35,6 @@ void CControl::setBStickySphere(bool bStickySphere)
 {
     m_bStickySphere = bStickySphere;
 }
-
-/*-------------------------------GETTER--------------------------------------*/
-bool CControl::bStart() const
-{
-    return m_bStart;
-}
-
-/*-------------------------------SETTER--------------------------------------*/
-void CControl::setBStart(bool bIsStarted)
-{
-    m_bStart = bIsStarted;
-}
-
 
 /*---------------------------------------------------------------------------*/
 int CControl::fSpeed()
@@ -102,12 +91,14 @@ int CControl::iCheckPicked(CVector3 *_poOrigin) // Permet de dire quel cube est 
             if (Brique->iGetDurability()<2)
             {
                 m_poModel->vDel(isPicked);
+                m_iScore=m_iScore+10;
             }
             else
             {
                 int Durability;
                 Durability=Brique->iGetDurability();
                 Brique->vSetDurability(Durability-1);
+                m_iScore=m_iScore+5;
             }
             touched=true;
         }
@@ -125,7 +116,6 @@ int CControl::iCheckPicked(CVector3 *_poOrigin) // Permet de dire quel cube est 
 
         /*------  INTERACTION SELON LA POSITION DE LA SPHERE SUR LE PALET  -------*/
         float iCoef;
-        float iSphereSpeed;
         CVector3 poPalet;
 
         Palet->vGetPosition(&poPalet);
@@ -139,7 +129,6 @@ int CControl::iCheckPicked(CVector3 *_poOrigin) // Permet de dire quel cube est 
         }
         iCoef = iCoef*2;
 
-        iSphereSpeed=Speed.fGetZ();
         if (iCoef>0.4)
         {
             iCoef=0.4;
@@ -165,7 +154,7 @@ int CControl::iCheckPicked(CVector3 *_poOrigin) // Permet de dire quel cube est 
         }
 
 
-        Speed.vSetY(-iCoef);
+        Speed.vSetY(iCoef);
         Sphere->vSetSpeed(&Speed);
 
 
@@ -207,7 +196,6 @@ int CControl::iCheckPicked(CVector3 *_poOrigin) // Permet de dire quel cube est 
         m_iLife=m_iLife-1;
         vSetNewLife();
         m_bStickySphere=true;
-        m_bStart=true;
     }
     return isPicked;
 }
@@ -257,3 +245,28 @@ void CControl::timerEvent()
     }
 }
 
+void CControl::vResetGame()
+{
+    m_fSpeed = 0.6;
+    m_iLife=3;
+    m_bStickySphere=true;
+    m_iScore=0;
+    m_iLvl=1;
+}
+
+void CControl::vLevelFinished()
+{
+    if (m_poModel->iGetNbObjects()==6)
+    {
+        vSetNewLife();
+        m_bStickySphere=true;
+        m_poModel->vLoadLevel(m_iLvl);
+        m_iLvl=m_iLvl+1;
+        if(m_iLvl==5)
+        {
+           m_iLvl=1;
+           m_fSpeed=m_fSpeed*1.5;
+        }
+    }
+
+}
