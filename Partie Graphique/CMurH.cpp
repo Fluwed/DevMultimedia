@@ -119,11 +119,11 @@ void CMurH::vGetSideColor(int _face, CVector3* _poColor)
         _poColor->vSet(1.0, 0.0, 1.0);
         break;
     }
-    if (iGetCurFace()!=-1 && iGetCurFace()==_face)
-        _poColor->vSet(1.0, 1.0, 1.0);
+    if (m_oPosition.fGetZ()<-10)
+        _poColor->vSet(1.0, 0.0, 0.0);
 }
 
-int CMurH::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersection, int* _iPickedFace)
+int CMurH::iIsPicked(CVector3* _poOrigin)
 {
 
 }

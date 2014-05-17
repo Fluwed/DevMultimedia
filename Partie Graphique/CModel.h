@@ -15,14 +15,14 @@ public:
     CModel();
     ~CModel();
 
-    void                vAdd();
+    void                vSetGame();
     void                vDel(int _iId);
     void vNewPos(CVector3 *_poPos, int _face);
     int                 iGetNbObjects();
     int                 iCheckPicked(CVector3* _poOrigin, CVector3* _poDir);
     CObject*            poGetObject(int _iIndex);
     void                vLoadLevel(int _iLvl);
-    void                vNewLife();
+    void                vSetLife();
     void                vSetSpeed(float _fSpeed);
 
 };

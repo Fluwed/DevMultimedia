@@ -36,6 +36,9 @@ public:
 
     void            MoveSphere();
 
+public slots:
+    void vStartGame();
+
 protected:
     void            initializeGL();
     void            paintGL();

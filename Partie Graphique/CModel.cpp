@@ -28,7 +28,7 @@ CModel::~CModel()
 }
 
 /*---------------------------------------------------------------------------*/
-void CModel::vAdd()
+void CModel::vSetGame()
 {
     // Ajout des 4 murs dans le QVector et du Palet
 
@@ -249,7 +249,7 @@ void CModel::vLoadLevel(int _iLvl)
     }
 }
 
-void CModel::vNewLife()
+void CModel::vSetLife()
 {
     CObject* poSphere; // Sphere / Position 5 dans le model
     CObject* poPalet;
@@ -264,6 +264,7 @@ void CModel::vNewLife()
     oPosSphere.vSetY(oPosPalet.fGetY());
     oPosSphere.vSetZ(-10.4);
     poSphere->vSetPosition(&oPosSphere);
+    vSetSpeed(0.0);
 }
 
 void CModel::vSetSpeed(float _fSpeed)

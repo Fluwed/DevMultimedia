@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "CGLArea.h"
+#include <QLabel>
 
 
 class CView : public QWidget
@@ -13,7 +14,9 @@ private:
     CModel*         m_poModel;
     CControl*       m_poCtrl;
     CGLArea*        m_poGlArea;
-    int             iNbCube=0;
+    QLabel*         m_poGameScore;
+    QTimer*         m_poClock;
+    int             m_iTimer;
     
 public:
     CView(QWidget *parent = 0);
@@ -29,9 +32,9 @@ private:
 
 public slots:
     void            vSetGame(void);
-    void            vDelFunction(void);
     void            vStartGame(void);
 
+    void updateTime();
 };
 
 #endif // CVIew_H

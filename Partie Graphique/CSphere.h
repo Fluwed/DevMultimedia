@@ -27,7 +27,7 @@ public:
     virtual void        vGetVertex(int _iFace, int _iVertex, CVector3* _poVect);
     virtual void        vGetSideColor(int _face, CVector3 *_poColor);
 
-    virtual int         iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersection, int* _iPickedFace);
+    virtual int         iIsPicked(CVector3* _poOrigin);
 
     virtual void vGetSpeed(CVector3 *_oSpeed);
     virtual void vSetSpeed(CVector3 *_oSpeed);

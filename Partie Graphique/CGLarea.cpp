@@ -151,8 +151,17 @@ void CGLArea::paintGL()
                 glEnd();
             }
         }
-        if (m_poModel->iGetNbObjects()>5)
+        if (m_poModel->iGetNbObjects()>5) // Tout ce qui est lié à l'animation dynamique
         {
+            if (m_poCtrl->m_bStickySphere==true)
+            {
+                m_poCtrl->vSetNewLife(); // Permet de que la sphère colle au palet tant que le jeu n'a pas commencé.
+            }
+            if (m_poCtrl->m_bStart==true)
+            {
+                m_poCtrl->setBStart(false);
+                QTimer::singleShot(5000, this, SLOT(vStartGame()));
+            }
             m_poCtrl->timerEvent(); // Permet le mouvement fluide du palet
             MoveSphere(); // Permet le mouvement fluide de la sphère
         }
@@ -251,7 +260,6 @@ void CGLArea::MoveSphere ()
     CVector3 oPos(0,0,0);
     CVector3 oSpeed(0,0,0);
     CVector3 _poRayOrigin;
-    CVector3 _poRayDir;
     CObject* Sphere;
 
 
@@ -263,10 +271,17 @@ void CGLArea::MoveSphere ()
     oPos.vSetZ(oPos.fGetZ()+oSpeed.fGetZ());
     m_poModel->poGetObject(5)->vSetPosition(&oPos);
 
-    Sphere->vGetPosition(&_poRayOrigin);
-    Sphere->vGetSpeed(&_poRayDir);
 
-    m_poCtrl->iCheckPicked(&_poRayOrigin, &_poRayDir);
+    Sphere->vGetPosition(&_poRayOrigin);
+
+    m_poCtrl->iCheckPicked(&_poRayOrigin);
+
+    //qDebug()<<"x :"<<oPos.fGetX()+oSpeed.fGetX()<<"y : "<<oPos.fGetY()+oSpeed.fGetY()<<" z : "<<oPos.fGetZ()+oSpeed.fGetZ();
 
 }
 
+void CGLArea::vStartGame()
+{
+    m_poCtrl->setBStickySphere(false);
+    m_poCtrl->vStart();
+}

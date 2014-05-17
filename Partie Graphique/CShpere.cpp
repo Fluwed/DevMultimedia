@@ -74,7 +74,7 @@ void CSphere::vGetSideColor(int _face, CVector3* _poColor)
 
 
 /*---------------------------------------------------------------------------*/
-int CSphere::iIsPicked(CVector3* _poOrigin, CVector3* _poDir, CVector3* _poIntersection, int* _iPickedFace)
+int CSphere::iIsPicked(CVector3* _poOrigin)
 {
     return 0;
 }

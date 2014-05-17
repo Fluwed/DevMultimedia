@@ -19,11 +19,6 @@ int CObject::iGetID()
     return m_iId;
 }
 
-int CObject::iGetCurFace()
-{
-    return m_iCurFace;
-}
-
 /*---------------------------------------------------------------------------*/
 void CObject::vSetPosition(CVector3* _oPos)
 {
@@ -36,7 +31,3 @@ void CObject::vGetPosition(CVector3* _poPos)
     _poPos->vSet(m_oPosition);
 }
 
-void CObject::vSetPicked(int _iPicked)
-{
-    m_iCurFace=_iPicked;
-}
