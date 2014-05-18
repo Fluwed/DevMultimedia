@@ -23,7 +23,8 @@ SOURCES += main.cpp \
     CShpere.cpp \
     CPalet.cpp \
     CMurH.cpp \
-    CMurV.cpp
+    CMurV.cpp \
+    CWebcam.cpp
 
 HEADERS  += \
     CView.h \
@@ -36,6 +37,7 @@ HEADERS  += \
     CSphere.h \
     CPalet.h \
     CMurH.h \
-    CMurV.h
+    CMurV.h \
+    CWebcam.h
 
 OTHER_FILES +=

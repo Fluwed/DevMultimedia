@@ -1,18 +1,18 @@
-#ifndef WEBCAMWINDOW_H
-#define WEBCAMWINDOW_H
+#ifndef CWEBCAM_H
+#define CWEBCAM_H
 
 #include <QtWidgets>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/objdetect/objdetect.hpp>
 
-class WebCamWindow : public QWidget
+class CWebcam : public QWidget
 {
     Q_OBJECT
-    
+
 public:
-    WebCamWindow(QWidget *parent = 0);
-    ~WebCamWindow();
+    CWebcam(QWidget *parent = 0);
+    ~CWebcam();
     void displayImage();
     void detectHand(int X, int Y);
     void trackHand();
@@ -42,4 +42,5 @@ private:
     int Temp_y = 150;
     };
 
-#endif // WEBCAMWINDOW_H
+
+#endif // CWEBCAM_H

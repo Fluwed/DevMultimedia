@@ -1,13 +1,14 @@
+#include "CWebcam.h"
 #include <QtWidgets>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/objdetect/objdetect.hpp>
-#include "webcamwindow.h"
+
 
 using namespace cv;
 
-WebCamWindow::WebCamWindow(QWidget *parent)
+CWebcam::CWebcam(QWidget *parent)
     : QWidget(parent)
 {
     webCamButton = new QPushButton(tr("Demarrer aquisition"));
@@ -38,12 +39,12 @@ WebCamWindow::WebCamWindow(QWidget *parent)
     startWebCam();
 }
 
-WebCamWindow::~WebCamWindow()
+CWebcam::~CWebcam()
 {
     delete webcam;
 }
 
-void WebCamWindow::displayImage()
+void CWebcam::displayImage()
 {
     if (image.data!=NULL)
     {
@@ -62,7 +63,7 @@ void WebCamWindow::displayImage()
 }
 
 
-void WebCamWindow::aquire()
+void CWebcam::aquire()
 {
     *webcam >> imgCam;
     if (!imgCam.empty()) {
@@ -75,7 +76,7 @@ void WebCamWindow::aquire()
 
 }
 
-void WebCamWindow::startWebCam()
+void CWebcam::startWebCam()
 {
     if (!timer->isActive())
     {
@@ -98,7 +99,7 @@ void WebCamWindow::startWebCam()
     }
 }
 
-void WebCamWindow::detectHand(int X, int Y)
+void CWebcam::detectHand(int X, int Y)
 {
     Mat frame;
     // Position X 150/Y 100 Taille X/Y (inverse)
@@ -113,12 +114,12 @@ void WebCamWindow::detectHand(int X, int Y)
 }
 
 
-void WebCamWindow::trackHand()
+void CWebcam::trackHand()
 {
     MatchingMethod();
 }
 
-void WebCamWindow::MatchingMethod()
+void CWebcam::MatchingMethod()
 {
     /// Source image to display
     Mat img_display;Mat result;
@@ -188,4 +189,6 @@ void WebCamWindow::MatchingMethod()
 
 
     return;
+}
+
 }
