@@ -3,11 +3,13 @@
 
 #include "CObject.h"
 #include <qvector.h>
+#include <QStringList>
 
 class CModel
 {
 private:
     QVector<CObject*>   m_oDatas;      // Pointer to the model
+    QStringList         m_oHighscore;
 
     float               fGetRandom();
 
@@ -25,6 +27,10 @@ public:
     void                vSetLife();
     void                vSetSpeed(float _fSpeed);
 
+    void                vLoadHighScore();
+    QStringList         oHighscore() const;
+    void                vSave(QString _otText, int _iScore);
+    void vResetLevel();
 };
 
 #endif // CModel_H

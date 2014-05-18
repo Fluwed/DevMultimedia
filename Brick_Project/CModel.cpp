@@ -6,7 +6,9 @@
 #include "CSphere.h"
 #include <qDebug.h>
 #include <QTimer>
-
+#include <QString>
+#include <QTextStream>
+#include <QFile>
 
 /*---------------------------------------------------------------------------*/
 CModel::CModel()
@@ -97,6 +99,25 @@ CObject* CModel::poGetObject(int _iIndex)
 }
 
 /*---------------------------------------------------------------------------*/
+
+QStringList CModel::oHighscore() const
+{
+    return m_oHighscore;
+}
+
+/*---------------------------------------------------------------------------*/
+void CModel::vSave(QString _otText, int _iScore)
+{
+    QFile f("HighScore.txt");
+
+    f.open(QIODevice::Append | QIODevice::Text);
+    QString s;
+    QTextStream ranks(&f);
+    ranks <<_otText<<" :   "<<_iScore<< "\n";
+    f.close();
+}
+
+
 float CModel::fGetRandom()
 {
     int High = 5.0;
@@ -248,6 +269,7 @@ void CModel::vLoadLevel(int _iLvl)
     }
 }
 
+/*---------------------------------------------------------------------------*/
 void CModel::vSetLife()
 {
     CObject* poSphere; // Sphere / Position 5 dans le model
@@ -266,6 +288,7 @@ void CModel::vSetLife()
     vSetSpeed(0.0);
 }
 
+/*---------------------------------------------------------------------------*/
 void CModel::vSetSpeed(float _fSpeed)
 {
     CObject* poSphere;
@@ -273,3 +296,32 @@ void CModel::vSetSpeed(float _fSpeed)
     CVector3 oSpeedSphere(0,0,_fSpeed/2);
     poSphere->vSetSpeed(&oSpeedSphere);
 }
+
+/*---------------------------------------------------------------------------*/
+void CModel::vLoadHighScore()
+{
+    QFile f("HighScore.txt");
+
+    f.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString s;
+    QTextStream ranks(&f);
+
+    do
+    {
+        s=(ranks.readLine());
+        m_oHighscore.append(s);
+    } while (!s.isNull());
+    f.close();
+}
+
+void CModel::vResetLevel()
+{
+
+    for (int i=6; i < m_oDatas.size(); i++)
+    {
+        CObject* poCurrent = m_oDatas[6];
+        m_oDatas.remove(6);
+        delete poCurrent;
+    }
+}
+

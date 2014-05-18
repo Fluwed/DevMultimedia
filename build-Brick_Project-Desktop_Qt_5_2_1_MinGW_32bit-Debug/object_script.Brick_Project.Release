@@ -1,0 +1,16 @@
+INPUT(
+./release\main.o
+./release\CView.o
+./release\CControl.o
+./release\CModel.o
+./release\CObject.o
+./release\CVector3.o
+./release\CGLarea.o
+./release\CBrique.o
+./release\CShpere.o
+./release\CPalet.o
+./release\CMurH.o
+./release\CMurV.o
+./release\moc_CView.o
+./release\moc_CGLarea.o
+);

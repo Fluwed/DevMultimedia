@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui opengl
+QT       += core gui opengl multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -37,3 +37,5 @@ HEADERS  += \
     CPalet.h \
     CMurH.h \
     CMurV.h
+
+OTHER_FILES +=

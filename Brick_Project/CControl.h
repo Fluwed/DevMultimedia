@@ -2,6 +2,7 @@
 #define CControl_H
 
 #include "CModel.h"
+#include <QSound>
 
 class CControl
 {
@@ -10,6 +11,7 @@ private:
     float           m_fSpeed;
     int             m_iLvl;
     int             m_iDifficulty;
+    QSound*         m_poSound;
 
 
 
@@ -39,6 +41,8 @@ public:
     void            setBStickySphere(bool bStickySphere);
     void            vResetGame();
     void            vLevelFinished();
+    QStringList     vLoadHighScore();
+    void            vSave(QString text, int _iScore);
 };
 
 #endif // CControl_H

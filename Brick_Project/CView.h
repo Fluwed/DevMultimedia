@@ -4,20 +4,35 @@
 #include <QWidget>
 #include "CGLArea.h"
 #include <QLabel>
-
+#include <QVBoxLayout>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSound>
 
 class CView : public QWidget
 {
     Q_OBJECT
 
 private:
+    bool            m_bScoreVisible;
     CModel*         m_poModel;
     CControl*       m_poCtrl;
     CGLArea*        m_poGlArea;
-    QLabel*         m_poGameScore;
+    QLabel*         m_poScore;
+    QLabel*         m_poLife;
+    QLabel*         m_poInfo;
     QTimer*         m_poClock;
+    QVBoxLayout*    m_poVLayout;
+    QVBoxLayout*    m_poGameScore;
+    QVBoxLayout*    m_poHighScore;
+    QHBoxLayout*    m_poHLayout;
+    QDialog*        m_poSave;
+    QLineEdit*      m_poLineEdit;
+    QPushButton*    m_poSaveBtn;
     int             m_iTimer;
     int             m_iFinalScore;
+    QSound*         m_poEndSound;
+
     
 public:
     CView(QWidget *parent = 0);
@@ -35,8 +50,11 @@ public slots:
     void            vSetGame(void);
     void            vStartGame(void);
 
-    void updateTime();
-    void vUpdateGame(void);
+    void            vUpdateTime(void);
+    void            vUpdateGame(void);
+    void            vHighScore(void);
+    void            vSave(void);
+    void            vSaveScore();
 };
 
 #endif // CVIew_H

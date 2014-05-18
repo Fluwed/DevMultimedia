@@ -3,6 +3,7 @@
 #include "CSphere.h"
 #include <qdebug.h>
 #include <QTimer>
+#include <QSound>
 
 /*---------------------------------------------------------------------------*/
 CControl::CControl(CModel* _model)
@@ -16,6 +17,7 @@ CControl::CControl(CModel* _model)
     m_iScore=0;
     m_iLvl=1;
     m_iDifficulty=1;
+    m_poSound = new QSound("LvL.wav");
 }
 
 
@@ -91,6 +93,7 @@ int CControl::iCheckPicked(CVector3 *_poOrigin) // Permet de dire quel cube est 
             if (Brique->iGetDurability()<2)
             {
                 m_poModel->vDel(isPicked);
+                QSound::play("Explosion.wav");
                 m_iScore=m_iScore+10;
             }
             else
@@ -156,8 +159,7 @@ int CControl::iCheckPicked(CVector3 *_poOrigin) // Permet de dire quel cube est 
 
         Speed.vSetY(iCoef);
         Sphere->vSetSpeed(&Speed);
-
-
+        QSound::play("Bounce.wav");
     }
     /*---------------------------------  MUR  ------------------------------------*/
 
@@ -218,6 +220,12 @@ void CControl::vMovePalet(int Key, bool is_moving)
 void CControl::vStart()
 {
     m_poModel->vSetSpeed(m_fSpeed);
+
+    if (m_poSound->isFinished())
+    {
+        m_poSound->play();
+        m_poSound->setLoops(99);
+    }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -228,7 +236,10 @@ void CControl::timerEvent()
         {
             palet=m_poModel->poGetObject(4);
             palet->vGetPosition(&oPos);
-            oPos.vSetY(oPos.fGetY()-0.75);
+            if (oPos.fGetY()>-22.4)
+            {
+                oPos.vSetY(oPos.fGetY()-0.75);
+            }
             oPos.vSetZ(oPos.fGetZ());
             palet->vSetPosition(&oPos);
         }
@@ -237,7 +248,10 @@ void CControl::timerEvent()
         {
             palet=m_poModel->poGetObject(4);
             palet->vGetPosition(&oPos);
-            oPos.vSetY(oPos.fGetY()+0.75);
+            if (oPos.fGetY()<22.4)
+            {
+                oPos.vSetY(oPos.fGetY()+0.75);
+            }
             oPos.vSetZ(oPos.fGetZ());
             palet->vSetPosition(&oPos);
         }
@@ -245,6 +259,7 @@ void CControl::timerEvent()
     }
 }
 
+/*---------------------------------------------------------------------------*/
 void CControl::vResetGame()
 {
     m_fSpeed = 0.6;
@@ -252,21 +267,38 @@ void CControl::vResetGame()
     m_bStickySphere=true;
     m_iScore=0;
     m_iLvl=1;
+    m_poSound->stop();
+    m_poModel->vResetLevel();
+    m_poModel->vLoadLevel(m_iLvl);
 }
 
+/*---------------------------------------------------------------------------*/
 void CControl::vLevelFinished()
 {
     if (m_poModel->iGetNbObjects()==6)
     {
         vSetNewLife();
+        m_fSpeed=m_fSpeed+0.1;
         m_bStickySphere=true;
         m_poModel->vLoadLevel(m_iLvl);
         m_iLvl=m_iLvl+1;
         if(m_iLvl==5)
         {
-           m_iLvl=1;
-           m_fSpeed=m_fSpeed*1.5;
+            m_iLvl=1;
+            m_fSpeed=m_fSpeed+0.2;
         }
     }
 
+}
+
+/*---------------------------------------------------------------------------*/
+QStringList CControl::vLoadHighScore()
+{
+    m_poModel->vLoadHighScore();
+    return m_poModel->oHighscore();
+}
+
+void CControl::vSave(QString _oText, int _iScore)
+{
+    m_poModel->vSave(_oText,_iScore);
 }
