@@ -162,18 +162,18 @@ void CWebcam::MatchingMethod()
         Point pt1=Point (0,100);
         Point pt2=Point (330,100);
         cv::line(image,pt1,pt2,Scalar(10,10,255),2,8,0);
-    // Transform it into the C++ cv::Mat format
-    cv::Mat img(image);
-    // Setup a rectangle to define your region of interest
-    cv::Rect myROI(0, 0, 320, 100);
+        // Transform it into the C++ cv::Mat format
+        cv::Mat img(image);
+        // Setup a rectangle to define your region of interest
+        cv::Rect myROI(0, 0, 320, 100);
 
-    // Crop the full image to that image contained by the rectangle myROI
-    // Note that this doesn't copy the data
-    img_display = img(myROI);
+        // Crop the full image to that image contained by the rectangle myROI
+        // Note that this doesn't copy the data
+        img_display = img(myROI);
     }
     else
     {
-       img_display=image;
+        img_display=image;
     }
 
     //image.copyTo( img_display );
@@ -213,14 +213,15 @@ void CWebcam::MatchingMethod()
 
     if (trackZone->isChecked())
     {
-    rectangle( img_display, matchLoc, Point( matchLoc.x + temp.cols , matchLoc.y + temp.rows ), Scalar(0, 200, 210), 2, 8, 0 );
+        if(Delta_x < 6 || Delta_y < 3)
+        {
+            rectangle( img_display, matchLoc, Point( matchLoc.x + temp.cols , matchLoc.y + temp.rows ), Scalar(0, 200, 210), 2, 8, 0 );
+            X = matchLoc.x;
+        }
     }
 
-    if(Delta_x > 6 || Delta_y > 3)
-    {
+    // qDebug()<<"Delta_x  "<<Delta_x<<"   Delta_y "<<Delta_y<<"   Loc.x "<<matchLoc.x<<"  Loc.y "<<matchLoc.y;
 
-    }
-    qDebug()<<"Delta_x  "<<Delta_x<<"   Delta_y "<<Delta_y<<"   Loc.x "<<matchLoc.x<<"  Loc.y "<<matchLoc.y;
 
     Temp_x = matchLoc.x;
     Temp_y = matchLoc.y;
@@ -229,8 +230,8 @@ void CWebcam::MatchingMethod()
 
 
 
-    X = matchLoc.x;
-    Y = matchLoc.y;
+
+    //Y = matchLoc.y;
 
 
     //rectangle( result, matchLoc, Point( matchLoc.x + temp.cols , matchLoc.y + temp.rows ), Scalar::all(0), 2, 8, 0 );
