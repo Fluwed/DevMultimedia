@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui opengl multimedia
+QT       += core gui opengl multimedia 
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -41,3 +41,13 @@ HEADERS  += \
     CWebcam.h
 
 OTHER_FILES +=
+
+INCLUDEPATH +=$$(OPENCV_DIR)\include
+
+LIBS += -L$$(OPENCV_DIR)\lib \
+    -lopencv_core248 \
+    -lopencv_highgui248 \
+    -lopencv_imgproc248 \
+    -lopencv_features2d248 \
+    -lopencv_calib3d248 \
+    -lopencv_objdetect248

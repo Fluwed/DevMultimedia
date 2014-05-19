@@ -13,28 +13,34 @@ CWebcam::CWebcam(QWidget *parent)
 {
     webCamButton = new QPushButton(tr("Demarrer aquisition"));
     label = new QLabel(tr("Image"));
-    //detectCheckBox = new QCheckBox(tr("Detection initiale"));
     trackCheckBox= new QCheckBox(tr("Tracking"));
-
+    trackCrop= new QCheckBox(tr("Tracking sur la partie haute de la webcam uniquement"));
+    trackZone= new QCheckBox(tr("Afficher le suivi de tracking"));
 
 
     connect(webCamButton, SIGNAL(clicked()), this, SLOT(startWebCam()));
 
     QVBoxLayout *vl1=new QVBoxLayout;
-    //vl1->addWidget(detectCheckBox);
     vl1->addWidget(trackCheckBox);
-    QHBoxLayout *hl=new QHBoxLayout;
-    hl->addWidget(webCamButton);
-    hl->addLayout(vl1);
+    vl1->addWidget(trackCrop);
+    vl1->addWidget(trackZone);
+    vl1->addWidget(webCamButton);
+    //vl1->addStretch();
+    //QHBoxLayout *hl=new QHBoxLayout;
+
+    //hl->addLayout(vl1);
+
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(label);
-    layout->addLayout(hl);
+    layout->addLayout(vl1);
+    layout->addStretch();
 
     setLayout(layout);
     setWindowTitle(tr("Track WebCam"));
 
     timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(aquire()));
+    show();
 
     startWebCam();
 }
@@ -43,6 +49,17 @@ CWebcam::~CWebcam()
 {
     delete webcam;
 }
+
+bool CWebcam::bIsTracking()
+{
+    return trackCheckBox->isChecked();
+}
+
+float CWebcam::fGetPosition()
+{
+    return X;
+}
+
 
 void CWebcam::displayImage()
 {
@@ -69,9 +86,9 @@ void CWebcam::aquire()
     if (!imgCam.empty()) {
         ::resize(imgCam,image,Size(),1,1,CV_INTER_AREA);
         if (!trackCheckBox->isChecked()) detectHand(X,Y);
-        //if (Delta < 5) detectHand(X,Y);
         if (trackCheckBox->isChecked()) trackHand();
         displayImage();
+
     }
 
 }
@@ -84,9 +101,9 @@ void CWebcam::startWebCam()
         webcam->set(CV_CAP_PROP_FRAME_HEIGHT,240);
         webcam->set(CV_CAP_PROP_FRAME_WIDTH,320);
         qDebug()<<"hauteur"<<webcam->get(CV_CAP_PROP_FRAME_HEIGHT);
-        qDebug()<<"hauteur"<<webcam->get(CV_CAP_PROP_FRAME_WIDTH);
+        qDebug()<<"largeur"<<webcam->get(CV_CAP_PROP_FRAME_WIDTH);
         webcam->set(5, 60);  //frame rate
-        timer->start(20);
+        timer->start(60);
         webCamButton->setText(tr("Arreter aquisition"));
 
     }
@@ -106,10 +123,11 @@ void CWebcam::detectHand(int X, int Y)
     cv::Rect rectRoi(X,Y,70,40);
     // Scalar (R,G,B), ,Epaisseur,0
     rectangle(image,rectRoi,Scalar( 0, 200, 10),2,8,0);
+
     temp=image.clone();
     temp=temp(rectRoi);
     cv::flip(temp,temp,1);
-    imshow("test",temp);
+    //imshow("test",temp);
 
 }
 
@@ -117,29 +135,58 @@ void CWebcam::detectHand(int X, int Y)
 void CWebcam::trackHand()
 {
     MatchingMethod();
+    /*pt1=Point (0,200);
+    pt2=Point (330,200);
+    cv::line(image,pt1,pt2,Scalar(10,10,255),2,8,0);*/
 }
+
+
 
 void CWebcam::MatchingMethod()
 {
     /// Source image to display
-    Mat img_display;Mat result;
+    Mat img_display;
+    Mat result;
+
+    //img_display=image;
 
     const char* image_window = "Source Image";
     const char* result_window = "Result window";
 
     int match_method;
 
-    image.copyTo( img_display );
+    // You mention that you start with a CVMat* imagesource
+
+    if (trackCrop->isChecked())
+    {
+        Point pt1=Point (0,100);
+        Point pt2=Point (330,100);
+        cv::line(image,pt1,pt2,Scalar(10,10,255),2,8,0);
+    // Transform it into the C++ cv::Mat format
+    cv::Mat img(image);
+    // Setup a rectangle to define your region of interest
+    cv::Rect myROI(0, 0, 320, 100);
+
+    // Crop the full image to that image contained by the rectangle myROI
+    // Note that this doesn't copy the data
+    img_display = img(myROI);
+    }
+    else
+    {
+       img_display=image;
+    }
+
+    //image.copyTo( img_display );
 
     /// Create the result matrix
-    int result_cols =  image.cols - temp.cols + 1;
-    int result_rows = image.rows - temp.rows + 1;
+    int result_cols =  img_display.cols - temp.cols + 1;
+    int result_rows = img_display.rows - temp.rows + 1;
 
     result.create( result_cols, result_rows, CV_32FC1 );
 
     /// Do the Matching and Normalize
-    imshow("image",image);
-    matchTemplate( image, temp, result,5 );
+    //imshow("image",image);
+    matchTemplate( img_display, temp, result,5 );
     normalize( result, result, 0, 1, NORM_MINMAX, -1, Mat() );
 
     /// Localizing the best match with minMaxLoc
@@ -164,12 +211,16 @@ void CWebcam::MatchingMethod()
 
     //Delta = 10;
 
-    rectangle( image, matchLoc, Point( matchLoc.x + temp.cols , matchLoc.y + temp.rows ), Scalar(0, 200, 210), 2, 8, 0 );
+    if (trackZone->isChecked())
+    {
+    rectangle( img_display, matchLoc, Point( matchLoc.x + temp.cols , matchLoc.y + temp.rows ), Scalar(0, 200, 210), 2, 8, 0 );
+    }
 
     if(Delta_x > 6 || Delta_y > 3)
     {
-        qDebug()<<"Delta_x  "<<Delta_x<<"   Delta_y "<<Delta_y<<"   Loc.x "<<matchLoc.x<<"  Loc.y "<<matchLoc.y;
+
     }
+    qDebug()<<"Delta_x  "<<Delta_x<<"   Delta_y "<<Delta_y<<"   Loc.x "<<matchLoc.x<<"  Loc.y "<<matchLoc.y;
 
     Temp_x = matchLoc.x;
     Temp_y = matchLoc.y;
@@ -191,4 +242,4 @@ void CWebcam::MatchingMethod()
     return;
 }
 
-}
+

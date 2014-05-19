@@ -12,6 +12,7 @@ private:
     int             m_iLvl;
     int             m_iDifficulty;
     QSound*         m_poSound;
+    QSound*         m_poEndSound;
 
 
 
@@ -43,6 +44,7 @@ public:
     void            vLevelFinished();
     QStringList     vLoadHighScore();
     void            vSave(QString text, int _iScore);
+    void            vTrackPalet(float _X);
 };
 
 #endif // CControl_H

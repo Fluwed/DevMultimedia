@@ -17,6 +17,7 @@ CControl::CControl(CModel* _model)
     m_iScore=0;
     m_iLvl=1;
     m_iDifficulty=1;
+    m_poEndSound = new QSound("End.wav");
     m_poSound = new QSound("LvL.wav");
 }
 
@@ -223,6 +224,7 @@ void CControl::vStart()
 
     if (m_poSound->isFinished())
     {
+        m_poEndSound->stop();
         m_poSound->play();
         m_poSound->setLoops(99);
     }
@@ -268,6 +270,7 @@ void CControl::vResetGame()
     m_iScore=0;
     m_iLvl=1;
     m_poSound->stop();
+    m_poEndSound->play();
     m_poModel->vResetLevel();
     m_poModel->vLoadLevel(m_iLvl);
 }
@@ -298,7 +301,21 @@ QStringList CControl::vLoadHighScore()
     return m_poModel->oHighscore();
 }
 
+/*---------------------------------------------------------------------------*/
 void CControl::vSave(QString _oText, int _iScore)
 {
     m_poModel->vSave(_oText,_iScore);
+}
+
+/*---------------------------------------------------------------------------*/
+void CControl::vTrackPalet(float _X)
+{
+    // _X Va de 0(Tout à droite) à 250
+    float result;
+    palet=m_poModel->poGetObject(4);
+    palet->vGetPosition(&oPos);
+    _X=_X/250;
+    result=-44.8*_X+22.4;
+    oPos.vSetY(result);
+    palet->vSetPosition(&oPos);
 }

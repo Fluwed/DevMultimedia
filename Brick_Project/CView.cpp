@@ -10,8 +10,9 @@ CView::CView(QWidget *parent)
 {
     m_iFinalScore=0;
     m_bScoreVisible=false;
+    Web = new CWebcam(this);
+    Web->hide();
 
-    m_poEndSound= new QSound("End.wav");
     QLabel* label= new QLabel("Pour lancer la boule, appuyer sur E.     Contrôles: Q = Gauche / D = Droite          (⌐■_■)");
     m_poScore = new QLabel(" Score : 0");
     m_poLife = new QLabel(" Vies : 3");
@@ -108,7 +109,6 @@ void CView::keyPressEvent(QKeyEvent* _event)
         m_poClock = new QTimer(this);
         connect(m_poClock, SIGNAL(timeout()), this, SLOT(vUpdateTime()));
         m_poClock->start(1000);
-        m_poEndSound->stop();
     }
 
 }
@@ -148,8 +148,12 @@ void CView::vUpdateGame()
         m_poInfo->setText("Partie terminée avec un score de "+ QString::number(m_iFinalScore) +". Appuyer sur E pour rejouer");
         m_poSaveBtn->show();
         m_poCtrl->vResetGame();
-        m_poEndSound->play("End.wav");
     }
+    if (Web->bIsTracking())
+    {
+        m_poCtrl->vTrackPalet(Web->fGetPosition());
+    }
+
 }
 
 void CView::vHighScore()
@@ -215,4 +219,10 @@ void CView::vSave(void){
             }
         }
     }
+}
+
+void CView::vTracking()
+{
+    Web->show();
+    m_poHLayout->addWidget(Web);
 }

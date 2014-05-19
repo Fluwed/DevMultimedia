@@ -16,6 +16,8 @@ public:
     void displayImage();
     void detectHand(int X, int Y);
     void trackHand();
+    bool bIsTracking();
+    float fGetPosition();
 
     void MatchingMethod();
 private slots:
@@ -27,6 +29,8 @@ private:
     QPushButton *webCamButton;
     QCheckBox *detectCheckBox;
     QCheckBox *trackCheckBox;
+    QCheckBox *trackCrop;
+    QCheckBox *trackZone;
     QTimer *timer;
     QLabel *label;
     cv::Mat imgCam;

@@ -8,6 +8,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QSound>
+#include <CWebcam.h>
 
 class CView : public QWidget
 {
@@ -31,7 +32,7 @@ private:
     QPushButton*    m_poSaveBtn;
     int             m_iTimer;
     int             m_iFinalScore;
-    QSound*         m_poEndSound;
+    CWebcam*        Web;
 
     
 public:
@@ -55,6 +56,7 @@ public slots:
     void            vHighScore(void);
     void            vSave(void);
     void            vSaveScore();
+    void vTracking();
 };
 
 #endif // CVIew_H
