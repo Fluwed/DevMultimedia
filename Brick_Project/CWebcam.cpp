@@ -4,6 +4,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/objdetect/objdetect.hpp>
+#include <QtConcurrent/QtConcurrent>
 
 
 using namespace cv;
@@ -82,7 +83,9 @@ void CWebcam::vDisplayImage()
 
 void CWebcam::vAcquire()
 {
-    *m_poWebcam >> m_oImgCam;
+    QFuture<void> future = QtConcurrent::run(this,&CWebcam::vGetImg);
+    QFuture<void> future1 = QtConcurrent::run(this,&CWebcam::vGetImg);
+    qDebug()<<m_poTimer->remainingTime();
     if (!m_oImgCam.empty()) {
         ::resize(m_oImgCam,m_oImage,Size(),1,1,CV_INTER_AREA);
         if (!m_poTrackCheckBox->isChecked()) vDetectHand(150,100);
@@ -100,7 +103,8 @@ void CWebcam::vStartWebCam()
         m_poWebcam= new cv::VideoCapture(0);
         m_poWebcam->set(CV_CAP_PROP_FRAME_HEIGHT,240);
         m_poWebcam->set(CV_CAP_PROP_FRAME_WIDTH,320);
-        m_poTimer->start(300);
+        m_poWebcam->set(CV_CAP_PROP_FPS,60);
+        m_poTimer->start(17);
         m_poWebCamButton->setText(tr("Arreter aquisition"));
 
     }
@@ -194,4 +198,7 @@ void CWebcam::vMatchingMethod()
     m_iX = matchLoc.x;
 }
 
+void CWebcam::vGetImg(){
+    *m_poWebcam >> m_oImgCam;
+}
 

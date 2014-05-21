@@ -38,6 +38,7 @@ public:
     bool                bIsTracking();
     float               fGetPosition();
 
+    void vGetImg();
 private slots:
     void                vAcquire();
     void                vStartWebCam();

@@ -180,7 +180,7 @@ void CModel::vLoadLevel(int _iLvl)
     case 2:
         for (int i=0;i<10;i++)
         {
-            CObject* poObj = new CBrique(i);
+            CObject* poObj = new CBrique(i,2);
             CVector3 oPos(0,-22.5+5*i,11);
             poObj->vSetPosition(&oPos);
             m_oDatas.append(poObj);
