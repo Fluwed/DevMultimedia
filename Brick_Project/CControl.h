@@ -14,8 +14,6 @@ private:
     QSound*         m_poSound;
     QSound*         m_poEndSound;
 
-
-
 public:
     CControl(CModel *_model);
     ~CControl();
@@ -23,28 +21,31 @@ public:
     int             m_iScore;
     int             m_iLife;
     bool            m_bStickySphere;
-    CObject*        palet;
-    CVector3        oPos;
+    CObject*        m_poPalet;
+    CVector3        m_oPos;
 
-    void            vSetGame();
     int             iCheckPicked(CVector3* _poOrigin);
+    bool            bIs_moving_left;
+    bool            bIs_moving_right;
+    bool            bStickySphere() const;
+    int             fSpeed();
+    void            vTimerEvent();
+    void            vSetGame();
     void            vMovePalet(int Key, bool pressed);
     void            vStart();
-    bool            is_moving_left;
-    bool            is_moving_right;
-
-    void            timerEvent();
-
-    int             fSpeed();
     void            setFSpeed(int fSpeed);
     void            vSetNewLife();
-    bool            bStickySphere() const;
     void            setBStickySphere(bool bStickySphere);
     void            vResetGame();
     void            vLevelFinished();
-    QStringList     vLoadHighScore();
     void            vSave(QString text, int _iScore);
     void            vTrackPalet(float _X);
+    void            vPauseMusic();
+    void            vResume();
+    void            vNoMusic();
+    void            vActivateMusic();
+
+    QStringList     vLoadHighScore();
 };
 
 #endif // CControl_H

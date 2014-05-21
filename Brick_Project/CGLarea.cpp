@@ -163,7 +163,7 @@ void CGLArea::paintGL()
                 QTimer::singleShot(5000, this, SLOT(vStartGame()));
             }*/
 
-            m_poCtrl->timerEvent(); // Permet le mouvement fluide du palet
+            m_poCtrl->vTimerEvent(); // Permet le mouvement fluide du palet
             MoveSphere(); // Permet le mouvement fluide de la sphère
         }
         glLoadIdentity();

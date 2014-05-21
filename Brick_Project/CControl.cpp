@@ -9,8 +9,8 @@
 CControl::CControl(CModel* _model)
 {
     m_poModel = _model;
-    is_moving_left=false;
-    is_moving_right=false;
+    bIs_moving_left=false;
+    bIs_moving_right=false;
     m_fSpeed = 0.6;
     m_iLife=3;
     m_bStickySphere=true;
@@ -64,7 +64,7 @@ void CControl::vSetNewLife()
 }
 
 /*-------------------- RESPONSABLE DE LA PARTIE HITBOX ----------------------*/
-int CControl::iCheckPicked(CVector3 *_poOrigin) // Permet de dire quel cube est sélectionné
+int CControl::iCheckPicked(CVector3 *_poOrigin) // Permet de dire quand un objet est touché
 {
     int isPicked=-1;
     bool touched=false;
@@ -129,7 +129,8 @@ int CControl::iCheckPicked(CVector3 *_poOrigin) // Permet de dire quel cube est 
         }
         else
         {
-            iCoef =(poPalet.fGetY() - _poOrigin->fGetY())/poPalet.fGetY(); //iCoef entre -1 et 1 mais il existe quelque cas où ce n'est pas vrai on utilise donc des if
+
+            iCoef =(_poOrigin->fGetY() - poPalet.fGetY())/6.0; //iCoef entre -1 et 1 mais il existe quelque cas où ce n'est pas vrai on utilise donc des if
         }
         iCoef = iCoef*2;
 
@@ -209,11 +210,11 @@ void CControl::vMovePalet(int Key, bool is_moving)
 
     if (Key==Qt::Key_Q)
     {
-        is_moving_left = is_moving;
+        bIs_moving_left = is_moving;
     }
     if (Key==Qt::Key_D)
     {
-        is_moving_right = is_moving;
+        bIs_moving_right = is_moving;
     }
 }
 
@@ -231,31 +232,31 @@ void CControl::vStart()
 }
 
 /*----------------------------------------------------------------------------*/
-void CControl::timerEvent()
+void CControl::vTimerEvent()
 {
     {
-        if (is_moving_left)
+        if (bIs_moving_left)
         {
-            palet=m_poModel->poGetObject(4);
-            palet->vGetPosition(&oPos);
-            if (oPos.fGetY()>-22.4)
+            m_poPalet=m_poModel->poGetObject(4);
+            m_poPalet->vGetPosition(&m_oPos);
+            if (m_oPos.fGetY()>-22.4)
             {
-                oPos.vSetY(oPos.fGetY()-0.75);
+                m_oPos.vSetY(m_oPos.fGetY()-0.75);
             }
-            oPos.vSetZ(oPos.fGetZ());
-            palet->vSetPosition(&oPos);
+            m_oPos.vSetZ(m_oPos.fGetZ());
+            m_poPalet->vSetPosition(&m_oPos);
         }
 
-        if (is_moving_right)
+        if (bIs_moving_right)
         {
-            palet=m_poModel->poGetObject(4);
-            palet->vGetPosition(&oPos);
-            if (oPos.fGetY()<22.4)
+            m_poPalet=m_poModel->poGetObject(4);
+            m_poPalet->vGetPosition(&m_oPos);
+            if (m_oPos.fGetY()<22.4)
             {
-                oPos.vSetY(oPos.fGetY()+0.75);
+                m_oPos.vSetY(m_oPos.fGetY()+0.75);
             }
-            oPos.vSetZ(oPos.fGetZ());
-            palet->vSetPosition(&oPos);
+            m_oPos.vSetZ(m_oPos.fGetZ());
+            m_poPalet->vSetPosition(&m_oPos);
         }
 
     }
@@ -312,10 +313,24 @@ void CControl::vTrackPalet(float _X)
 {
     // _X Va de 0(Tout à droite) à 250
     float result;
-    palet=m_poModel->poGetObject(4);
-    palet->vGetPosition(&oPos);
+    m_poPalet=m_poModel->poGetObject(4);
+    m_poPalet->vGetPosition(&m_oPos);
     _X=_X/250;
     result=-44.8*_X+22.4;
-    oPos.vSetY(result);
-    palet->vSetPosition(&oPos);
+    m_oPos.vSetY(result);
+    m_poPalet->vSetPosition(&m_oPos);
 }
+
+void CControl::vPauseMusic()
+{
+    m_poSound->stop();
+    m_poEndSound->stop();
+}
+
+void CControl::vResume()
+{
+    m_poSound->play();
+}
+
+
+

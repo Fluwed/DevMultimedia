@@ -64,7 +64,7 @@ void CPalet::vGetSideColor(int _face, CVector3* _poColor)
     switch(_face)
     {
     case 1:
-        _poColor->vSet(1.0, 0.0, 0.0);
+        _poColor->vSet(0.55, 0.90, 0.0);
         break;
     case 2:
         _poColor->vSet(1.0, 1.0, 0.0);

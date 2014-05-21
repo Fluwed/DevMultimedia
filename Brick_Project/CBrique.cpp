@@ -100,7 +100,7 @@ void CBrique::vGetSideColor(int _face, CVector3* _poColor)
         _poColor->vSet(0.32, 0.32, 0.32);
         break;
     case 1:
-        _poColor->vSet(1.0, 1.0, 0.0);
+        _poColor->vSet(1.0, 0.89, 0.0);
         break;
     case 2:
         _poColor->vSet(0.75, 0.75, 0.75);

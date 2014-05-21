@@ -10,8 +10,10 @@ CView::CView(QWidget *parent)
 {
     m_iFinalScore=0;
     m_bScoreVisible=false;
-    Web = new CWebcam(this);
-    Web->hide();
+    m_bPause=false;
+    m_bMusic=true;
+    m_poWebcam = new CWebcam(this);
+    m_poWebcam->hide();
 
     QLabel* label= new QLabel("Pour lancer la boule, appuyer sur E.     Contrôles: Q = Gauche / D = Droite          (⌐■_■)");
     m_poScore = new QLabel(" Score : 0");
@@ -26,12 +28,17 @@ CView::CView(QWidget *parent)
     m_poHighScore = new QVBoxLayout();
 
     QPushButton* poTrackBtn = new QPushButton(tr("&Tracking"));
+    QPushButton* poPauseBtn = new QPushButton(tr("&Pause"));
     QPushButton* poRankBtn = new QPushButton(tr("&HighScores"));
     m_poSaveBtn = new QPushButton(tr("&SaveScore"));
 
+    m_poMusicBtn = new QPushButton(tr("&Désactiver Musique"));
+
     connect(poTrackBtn, SIGNAL(clicked()), this, SLOT(vTracking()));
+    connect(poPauseBtn, SIGNAL(clicked()), this, SLOT(vPause()));
     connect(poRankBtn, SIGNAL(clicked()), this, SLOT(vHighScore()));
     connect(m_poSaveBtn, SIGNAL(clicked()), this, SLOT(vSaveScore()));
+    connect(m_poMusicBtn, SIGNAL(clicked()), this, SLOT(vSetMusic()));
 
     /*--------------- Layout Principale ------------------*/
     m_poHLayout->addLayout(m_poVLayout);
@@ -42,8 +49,10 @@ CView::CView(QWidget *parent)
 
     /*--------------- Layout Secondaire ------------------*/
     m_poGameScore->addWidget(poTrackBtn);
+    m_poGameScore->addWidget(poPauseBtn);
     m_poGameScore->addWidget(poRankBtn);
     m_poGameScore->addWidget(m_poSaveBtn);
+    m_poGameScore->addWidget(m_poMusicBtn);
     m_poGameScore->addWidget(m_poScore);
     m_poGameScore->addWidget(m_poLife);
     m_poGameScore->addStretch();
@@ -54,9 +63,9 @@ CView::CView(QWidget *parent)
 
     QTimer::singleShot(100, this, SLOT(vSetGame()));
 
-    QTimer *game = new QTimer(this);
-    connect(game, SIGNAL(timeout()), this, SLOT(vUpdateGame()));
-    game->start(100);
+    //QTimer *game = new QTimer(this);
+    //connect(game, SIGNAL(timeout()), this, SLOT(vUpdateGame()));
+    //game->start(15);
 
 }
 
@@ -86,9 +95,10 @@ void CView::vSetGame(void)
     m_poCtrl->vSetGame();
     m_poGlArea->updateGL();
 
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), m_poGlArea, SLOT(updateGL()));
-    timer->start(0);
+    m_poTimer = new QTimer(this);
+    connect(m_poTimer, SIGNAL(timeout()), m_poGlArea, SLOT(updateGL()),Qt::DirectConnection);
+    connect(m_poTimer, SIGNAL(timeout()), this, SLOT(vUpdateGame()));
+    m_poTimer->start(15);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -149,11 +159,10 @@ void CView::vUpdateGame()
         m_poSaveBtn->show();
         m_poCtrl->vResetGame();
     }
-    if (Web->bIsTracking())
+    if (m_poWebcam->bIsTracking())
     {
-        m_poCtrl->vTrackPalet(Web->fGetPosition());
+        m_poCtrl->vTrackPalet(m_poWebcam->fGetPosition());
     }
-
 }
 
 void CView::vHighScore()
@@ -223,6 +232,36 @@ void CView::vSave(void){
 
 void CView::vTracking()
 {
-    Web->show();
-    m_poHLayout->addWidget(Web);
+    m_poWebcam->show();
+    m_poHLayout->addWidget(m_poWebcam);
+}
+
+void CView::vPause()
+{
+    if(m_bPause==false)
+    {
+        m_poTimer->stop();
+        m_bPause=true;
+    }
+    else
+    {
+        m_poTimer->start();
+    }
+
+}
+
+void CView::vSetMusic()
+{
+    if(m_bMusic==true)
+    {
+         m_poCtrl->vPauseMusic();
+         m_bMusic=false;
+         m_poMusicBtn->setText(tr("&Activer Musique"));
+    }
+    else
+    {
+        m_poCtrl->vResume();
+        m_bMusic=true;
+        m_poMusicBtn->setText(tr("&Désactiver Musique"));
+    }
 }
