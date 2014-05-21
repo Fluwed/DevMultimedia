@@ -3,7 +3,7 @@
 
 #include "CObject.h"
 
-class CPalet : public CObject
+class CPalet : public CObject //Dérive de CObjet
 {
 public:
     CPalet();

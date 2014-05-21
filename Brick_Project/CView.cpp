@@ -9,6 +9,7 @@ CView::CView(QWidget *parent)
     : QWidget(parent)
 {
     m_iFinalScore=0;
+    m_iTimer=4;
     m_bScoreVisible=false;
     m_bPause=false;
     m_bMusic=true;
@@ -63,10 +64,6 @@ CView::CView(QWidget *parent)
 
     QTimer::singleShot(100, this, SLOT(vSetGame()));
 
-    //QTimer *game = new QTimer(this);
-    //connect(game, SIGNAL(timeout()), this, SLOT(vUpdateGame()));
-    //game->start(15);
-
 }
 
 /*---------------------------------------------------------------------------*/
@@ -111,7 +108,7 @@ void CView::vStartGame()
 void CView::keyPressEvent(QKeyEvent* _event)
 {
     m_poCtrl->vMovePalet(_event->key(),true);
-    if (_event->key()==Qt::Key_E)
+    if ((_event->key()==Qt::Key_E) && (m_poCtrl->bStickySphere()==true) && (m_iTimer==4))
     {
         m_poSaveBtn->hide();
         m_poInfo->setText("Lancement dans : 3 sec");
@@ -139,14 +136,23 @@ void CView::vUpdateTime(void)
         m_poClock->stop();
         m_poCtrl->setBStickySphere(false);
         m_poCtrl->vStart();
+        m_iTimer=4;
     }
+    if (m_poCtrl->bStickySphere()==false)
+    {
+        m_poInfo->setText("");
+        m_poClock->stop();
+        m_iTimer=4;
+    }
+
 }
 
+/*---------------------------------------------------------------------------*/
 void CView::vUpdateGame()
 {
     /*----------------------------------- Affichage score une fois la partie commencée --------------------------------------*/
-        m_poScore->setText(" Score : "+ QString::number(m_poCtrl->m_iScore));
-        m_poLife->setText(" Vies : "+ QString::number(m_poCtrl->m_iLife));
+    m_poScore->setText(" Score : "+ QString::number(m_poCtrl->m_iScore));
+    m_poLife->setText(" Vies : "+ QString::number(m_poCtrl->m_iLife));
 
     /*----------------------------------- Fonction de Gestion des niveaux --------------------------------------*/
     m_poCtrl->vLevelFinished();
@@ -165,6 +171,7 @@ void CView::vUpdateGame()
     }
 }
 
+/*---------------------------------------------------------------------------*/
 void CView::vHighScore()
 {
     if (m_bScoreVisible==false)
@@ -188,6 +195,7 @@ void CView::vHighScore()
     }
 }
 
+/*---------------------------------------------------------------------------*/
 void CView::vSaveScore()
 {
     m_poSave = new QDialog(this);
@@ -207,6 +215,7 @@ void CView::vSaveScore()
     m_poSave->show();
 }
 
+/*---------------------------------------------------------------------------*/
 void CView::vSave(void){
     {
         QString oText = m_poLineEdit->text();
@@ -230,12 +239,14 @@ void CView::vSave(void){
     }
 }
 
+/*---------------------------------------------------------------------------*/
 void CView::vTracking()
 {
     m_poWebcam->show();
     m_poHLayout->addWidget(m_poWebcam);
 }
 
+/*---------------------------------------------------------------------------*/
 void CView::vPause()
 {
     if(m_bPause==false)
@@ -246,17 +257,19 @@ void CView::vPause()
     else
     {
         m_poTimer->start();
+        m_bPause=false;
     }
 
 }
 
+/*---------------------------------------------------------------------------*/
 void CView::vSetMusic()
 {
     if(m_bMusic==true)
     {
-         m_poCtrl->vPauseMusic();
-         m_bMusic=false;
-         m_poMusicBtn->setText(tr("&Activer Musique"));
+        m_poCtrl->vPauseMusic();
+        m_bMusic=false;
+        m_poMusicBtn->setText(tr("&Activer Musique"));
     }
     else
     {

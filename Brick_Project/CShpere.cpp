@@ -123,7 +123,7 @@ static int sindex[20][3] = {
     {9, 2, 5},
     {7, 2, 11}, };
 
-
+/*---------------------------------------------------------------------------*/
 void CSphere::vPousserProfondeur(float v[3])
 {
     float d = qSqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);
@@ -132,6 +132,7 @@ void CSphere::vPousserProfondeur(float v[3])
     v[2]=v[2]/d;
 }
 
+/*---------------------------------------------------------------------------*/
 void CSphere::vComputeTriangle(float* v1, float *v2, float *v3, int n)
 {
     int xyz;
@@ -172,7 +173,6 @@ void CSphere::vComputeTriangle(float* v1, float *v2, float *v3, int n)
     }
 }
 
-
 /*---------------------------------------------------------------------------*/
 void CSphere::vGenerateData(void)
 {
@@ -183,6 +183,7 @@ void CSphere::vGenerateData(void)
 
 }
 
+/*---------------------------------------------------------------------------*/
 void CSphere::vGetSpeed(CVector3* _oSpeed)
 {
     _oSpeed->vSetX(m_oSpeed.fGetX());
@@ -190,6 +191,7 @@ void CSphere::vGetSpeed(CVector3* _oSpeed)
     _oSpeed->vSetZ(m_oSpeed.fGetZ());
 }
 
+/*---------------------------------------------------------------------------*/
 void CSphere::vSetSpeed(CVector3* _oSpeed)
 {
     m_oSpeed.vSetX(_oSpeed->fGetX());
@@ -197,11 +199,13 @@ void CSphere::vSetSpeed(CVector3* _oSpeed)
     m_oSpeed.vSetZ(_oSpeed->fGetZ());
 }
 
+/*---------------------------------------------------------------------------*/
 int CSphere::iGetDurability()
 {
 
 }
 
+/*---------------------------------------------------------------------------*/
 void CSphere::vSetDurability(int _iDurability)
 {
 

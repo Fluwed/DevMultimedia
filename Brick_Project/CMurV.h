@@ -3,7 +3,7 @@
 
 #include "CObject.h"
 
-class CMurV : public CObject
+class CMurV : public CObject //Dérive de CObjet
 {
 public:
     CMurV();

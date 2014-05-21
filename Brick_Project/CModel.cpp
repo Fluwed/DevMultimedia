@@ -9,6 +9,7 @@
 #include <QString>
 #include <QTextStream>
 #include <QFile>
+#include <QtConcurrent/QtConcurrent>
 
 /*---------------------------------------------------------------------------*/
 CModel::CModel()
@@ -117,50 +118,19 @@ void CModel::vSave(QString _otText, int _iScore)
     f.close();
 }
 
-
-float CModel::fGetRandom()
-{
-    int High = 5.0;
-    int Low = -5.0;
-    float Div = 3.0;
-
-    float result = ((float) (qrand() % ((High + 1) - Low) + Low))/Div;
-
-    return result;
-}
-
 /*---------------------------------------------------------------------------*/
-void CModel::vNewPos(CVector3 *_poPos, int _face)
-{
-    switch(_face)
-    {
-    case 0:
-        _poPos->vSetZ(_poPos->fGetZ()-1);
-        break;
-    case 1:
-        _poPos->vSetX(_poPos->fGetX()+1);
-        break;
-    case 2:
-        _poPos->vSetY(_poPos->fGetY()+1);
-        break;
-    case 3:
-        _poPos->vSetX(_poPos->fGetX()-1);
-        break;
-    case 4:
-        _poPos->vSetY(_poPos->fGetY()-1);
-        break;
-    case 5:
-        _poPos->vSetZ(_poPos->fGetZ()+1);
-        break;
-    }
-}
-
-/*---------------------------------------------------------------------------*/
-
 void CModel::vLoadLevel(int _iLvl)
 {
     switch(_iLvl)
     {
+    case 0:
+    {
+        CObject* poObj = new CBrique(0);
+        CVector3 oPos(0,0,10);
+        poObj->vSetPosition(&oPos);
+        m_oDatas.append(poObj);
+    }
+        break;
     case 1:
         for (int i=0;i<10;i++)
         {
@@ -314,14 +284,14 @@ void CModel::vLoadHighScore()
     f.close();
 }
 
+/*---------------------------------------------------------------------------*/
 void CModel::vResetLevel()
 {
-
-    for (int i=6; i < m_oDatas.size(); i++)
+    int i=m_oDatas.size();
+    while(i>=0)
     {
-        CObject* poCurrent = m_oDatas[6];
-        m_oDatas.remove(6);
-        delete poCurrent;
-    }
+        vDel(i);
+        i=i-1;
+    };
 }
 

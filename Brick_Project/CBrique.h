@@ -3,7 +3,7 @@
 
 #include "CObject.h"
 
-class CBrique : public CObject
+class CBrique : public CObject //Dérive de CObjet
 {
 public:
     CBrique();

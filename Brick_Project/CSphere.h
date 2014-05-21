@@ -4,7 +4,7 @@
 #include "CObject.h"
 #include <QVector>
 
-class CSphere : public CObject
+class CSphere : public CObject //Dérive de CObjet
 {
 private:
     QVector<CVector3>   m_oVertices;

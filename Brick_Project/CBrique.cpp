@@ -117,6 +117,7 @@ void CBrique::vGetSideColor(int _face, CVector3* _poColor)
     }
 }
 
+/*---------------------------------------------------------------------------*/
 int CBrique::iIsPicked(CVector3* _poOrigin)
 {
     int iStatus=0;
@@ -142,21 +143,25 @@ int CBrique::iIsPicked(CVector3* _poOrigin)
     return iStatus;
 }
 
+/*---------------------------------------------------------------------------*/
 void CBrique::vGetSpeed(CVector3 *_oSpeed)
 {
 
 }
 
+/*---------------------------------------------------------------------------*/
 void CBrique::vSetSpeed(CVector3 *_oSpeed)
 {
 
 }
 
+/*---------------------------------------------------------------------------*/
 int CBrique::iGetDurability()
 {
     return m_iDurability;
 }
 
+/*---------------------------------------------------------------------------*/
 void CBrique::vSetDurability(int _iDurability)
 {
     m_iDurability=_iDurability;

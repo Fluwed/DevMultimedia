@@ -85,6 +85,7 @@ void CPalet::vGetSideColor(int _face, CVector3* _poColor)
     }
 }
 
+/*---------------------------------------------------------------------------*/
 int CPalet::iIsPicked(CVector3* _poOrigin)
 {
     int iStatus=0;
@@ -103,22 +104,25 @@ int CPalet::iIsPicked(CVector3* _poOrigin)
     return iStatus;
 }
 
-
+/*---------------------------------------------------------------------------*/
 void CPalet::vGetSpeed(CVector3 *_oSpeed)
 {
 
 }
 
+/*---------------------------------------------------------------------------*/
 void CPalet::vSetSpeed(CVector3 *_oSpeed)
 {
 
 }
 
+/*---------------------------------------------------------------------------*/
 int CPalet::iGetDurability()
 {
 
 }
 
+/*---------------------------------------------------------------------------*/
 void CPalet::vSetDurability(int _iDurability)
 {
 

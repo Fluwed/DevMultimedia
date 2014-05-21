@@ -11,11 +11,11 @@ CControl::CControl(CModel* _model)
     m_poModel = _model;
     bIs_moving_left=false;
     bIs_moving_right=false;
-    m_fSpeed = 0.6;
+    m_fSpeed = 0.50;
     m_iLife=3;
     m_bStickySphere=true;
     m_iScore=0;
-    m_iLvl=1;
+    m_iLvl=0;
     m_iDifficulty=1;
     m_poEndSound = new QSound("End.wav");
     m_poSound = new QSound("LvL.wav");
@@ -100,6 +100,7 @@ int CControl::iCheckPicked(CVector3 *_poOrigin) // Permet de dire quand un objet
             else
             {
                 int Durability;
+                QSound::play("Explosion.wav");
                 Durability=Brique->iGetDurability();
                 Brique->vSetDurability(Durability-1);
                 m_iScore=m_iScore+5;
@@ -265,15 +266,15 @@ void CControl::vTimerEvent()
 /*---------------------------------------------------------------------------*/
 void CControl::vResetGame()
 {
-    m_fSpeed = 0.6;
+    m_fSpeed = 0.50;
     m_iLife=3;
     m_bStickySphere=true;
     m_iScore=0;
-    m_iLvl=1;
+    m_iLvl=0;
+    m_iDifficulty=1;
     m_poSound->stop();
     m_poEndSound->play();
     m_poModel->vResetLevel();
-    m_poModel->vLoadLevel(m_iLvl);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -282,14 +283,14 @@ void CControl::vLevelFinished()
     if (m_poModel->iGetNbObjects()==6)
     {
         vSetNewLife();
-        m_fSpeed=m_fSpeed+0.1;
+        m_fSpeed=m_fSpeed+0.05;
         m_bStickySphere=true;
         m_poModel->vLoadLevel(m_iLvl);
         m_iLvl=m_iLvl+1;
         if(m_iLvl==5)
         {
             m_iLvl=1;
-            m_fSpeed=m_fSpeed+0.2;
+            m_iDifficulty++;
         }
     }
 
@@ -321,12 +322,14 @@ void CControl::vTrackPalet(float _X)
     m_poPalet->vSetPosition(&m_oPos);
 }
 
+/*---------------------------------------------------------------------------*/
 void CControl::vPauseMusic()
 {
     m_poSound->stop();
     m_poEndSound->stop();
 }
 
+/*---------------------------------------------------------------------------*/
 void CControl::vResume()
 {
     m_poSound->play();

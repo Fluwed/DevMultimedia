@@ -43,25 +43,28 @@ CWebcam::CWebcam(QWidget *parent)
     connect(m_poTimer, SIGNAL(timeout()), this, SLOT(vAcquire()),Qt::AutoConnection);
     show();
 
-    vStartWebCam();
+    //vStartWebCam();
 }
 
+/*---------------------------------------------------------------------------*/
 CWebcam::~CWebcam()
 {
     delete m_poWebcam;
 }
 
+/*---------------------------------------------------------------------------*/
 bool CWebcam::bIsTracking()
 {
     return m_poTrackCheckBox->isChecked();
 }
 
+/*---------------------------------------------------------------------------*/
 float CWebcam::fGetPosition()
 {
     return m_iX;
 }
 
-
+/*---------------------------------------------------------------------------*/
 void CWebcam::vDisplayImage()
 {
     if (m_oImage.data!=NULL)
@@ -80,22 +83,19 @@ void CWebcam::vDisplayImage()
     else QMessageBox(QMessageBox::Critical,tr("Error"),tr("Image is void")).exec();
 }
 
-
+/*---------------------------------------------------------------------------*/
 void CWebcam::vAcquire()
 {
     QFuture<void> future = QtConcurrent::run(this,&CWebcam::vGetImg);
-    QFuture<void> future1 = QtConcurrent::run(this,&CWebcam::vGetImg);
-    qDebug()<<m_poTimer->remainingTime();
     if (!m_oImgCam.empty()) {
         ::resize(m_oImgCam,m_oImage,Size(),1,1,CV_INTER_AREA);
         if (!m_poTrackCheckBox->isChecked()) vDetectHand(150,100);
-        if (m_poTrackCheckBox->isChecked()) vTrackHand();
+        if (m_poTrackCheckBox->isChecked()) vMatchingMethod();
         vDisplayImage();
-
     }
-
 }
 
+/*---------------------------------------------------------------------------*/
 void CWebcam::vStartWebCam()
 {
     if (!m_poTimer->isActive())
@@ -112,11 +112,11 @@ void CWebcam::vStartWebCam()
     {
         m_poTimer->stop();
         delete m_poWebcam;
-        m_poWebcam=0;
         m_poWebCamButton->setText(tr("Demarrer aquisition"));
     }
 }
 
+/*---------------------------------------------------------------------------*/
 void CWebcam::vDetectHand(int X, int Y)
 {
     Mat frame;
@@ -129,15 +129,7 @@ void CWebcam::vDetectHand(int X, int Y)
 
 }
 
-
-void CWebcam::vTrackHand()
-{
-    vMatchingMethod();
-
-}
-
-
-
+/*---------------------------------------------------------------------------*/
 void CWebcam::vMatchingMethod()
 {
     /// Source image to display
@@ -152,7 +144,7 @@ void CWebcam::vMatchingMethod()
         Point pt1=Point (0,100);
         Point pt2=Point (330,100);
         cv::line(m_oImage,pt1,pt2,Scalar(10,10,255),2,8,0);
-       // cv::Mat img(m_oImage);
+        // cv::Mat img(m_oImage);
         cv::Rect myROI(0, 0, 320, 100);
         img_display = m_oImage(myROI);
     }
@@ -198,7 +190,9 @@ void CWebcam::vMatchingMethod()
     m_iX = matchLoc.x;
 }
 
+/*---------------------------------------------------------------------------*/
 void CWebcam::vGetImg(){
-    *m_poWebcam >> m_oImgCam;
+    if (m_poWebcam->isOpened())
+        *m_poWebcam >> m_oImgCam;
 }
 
