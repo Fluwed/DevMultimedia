@@ -100,6 +100,7 @@ void CWebcam::vStartWebCam()
 {
     if (!m_poTimer->isActive())
     {
+        m_poTrackCheckBox->setChecked(false);
         m_poWebcam= new cv::VideoCapture(0);
         m_poWebcam->set(CV_CAP_PROP_FRAME_HEIGHT,240);
         m_poWebcam->set(CV_CAP_PROP_FRAME_WIDTH,320);
